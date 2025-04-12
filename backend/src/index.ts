@@ -1,6 +1,7 @@
-import express, { type Express, type Request, type Response } from "express";
+import express from "express";
 import cors from "cors";
 import "dotenv/config";
+import serverless from "serverless-http";
 // import pool from "./db/db";
 // import uploadRoutes from "./routes/upload.route";
 // import billingRoutes from "./routes/billing.route";
@@ -10,7 +11,7 @@ function logInitializationStep(message: string) {
   console.log(GREEN_COLOR_FORMATTING, "✓ init", message);
 }
 
-const app: Express = express();
+const app = express();
 const port = process.env.SERVER_PORT || 3000;
 
 // Check if the database is running
@@ -31,7 +32,7 @@ const port = process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   res.json({ message: "Hello from Express!" });
 });
 
@@ -41,5 +42,7 @@ app.get("/", (req: Request, res: Response) => {
 app.listen({ port }, () => {
   logInitializationStep(`Server running at ${process.env.SERVER_URL}`);
 });
+
+export const handler = serverless(app);
 
 export default app;

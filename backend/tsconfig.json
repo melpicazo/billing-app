@@ -34,7 +34,7 @@
 
     /* Path Aliases */
     "paths": {
-      "*": ["./api/*"]
+      "*": ["./src/*"]
     }
   },
   "exclude": [".env"]
