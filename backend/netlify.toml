@@ -1,4 +1,8 @@
+[build]
+  functions = "functions"
+
 [functions]
+  directory = "api"
   external_node_modules = ["express"]
   node_bundler = "esbuild"
 
