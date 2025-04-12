@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express, type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 // import pool from "./db/db";
@@ -10,7 +10,7 @@ function logInitializationStep(message: string) {
   console.log(GREEN_COLOR_FORMATTING, "✓ init", message);
 }
 
-const app = express();
+const app: Express = express();
 const port = process.env.SERVER_PORT || 3000;
 
 // Check if the database is running
@@ -31,7 +31,7 @@ const port = process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req: express.Request, res: express.Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Hello from Express!" });
 });
 
