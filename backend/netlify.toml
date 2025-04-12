@@ -1,7 +1,7 @@
 [functions]
   directory = "src"
-  external_node_modules = ["express"]
   node_bundler = "esbuild"
+  included_files = ["package.json"]
 
 [[redirects]]
   from = "/api/*"
