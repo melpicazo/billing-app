@@ -1,4 +1,16 @@
 /**
+ * BILLING TIERS TABLE
+ * Contains billing tier information such as name, threshold, and fee percentage.
+ */
+CREATE TABLE IF NOT EXISTS billing_tiers (
+  id SERIAL PRIMARY KEY, /* Internal PK (indexing, joins, relationships) */
+  external_tier_id TEXT UNIQUE NOT NULL, /* External Client ID from .csv. Used as FK in clients table */
+  portfolio_aum_min NUMERIC NOT NULL,             
+  portfolio_aum_max NUMERIC NOT NULL,             
+  fee_percentage DECIMAL(5,4) NOT NULL  /* Ensures we store percentages as decimal values */          
+);
+
+/**
  * CLIENTS TABLE
  * Contains client information such as name, province, country, and associated billing tier.
  */
@@ -8,7 +20,7 @@ CREATE TABLE IF NOT EXISTS clients (
   client_name TEXT NOT NULL,
   province TEXT,
   country TEXT,
-  billing_tier_id INTEGER REFERENCES billing_tiers(id), /* FK to billing_tiers. Each client is assigned a billing tier */
+  billing_tier_id INTEGER REFERENCES billing_tiers(id) /* FK to billing_tiers. Each client is assigned a billing tier */
 );
 
 /**
@@ -33,18 +45,6 @@ CREATE TABLE IF NOT EXISTS assets (
   asset_value NUMERIC NOT NULL,                  
   currency TEXT NOT NULL,
   date DATE NOT NULL                              
-);
-
-/**
- * BILLING TIERS TABLE
- * Contains billing tier information such as name, threshold, and fee percentage.
- */
-CREATE TABLE IF NOT EXISTS billing_tiers (
-  id SERIAL PRIMARY KEY, /* Internal PK (indexing, joins, relationships) */
-  external_tier_id TEXT UNIQUE NOT NULL, /* External Client ID from .csv. Used as FK in clients table */
-  portfolio_aum_min NUMERIC NOT NULL,             
-  portfolio_aum_max NUMERIC NOT NULL,             
-  fee_percentage DECIMAL(5,4) NOT NULL,  /* Ensures we store percentages as decimal values */          
 );
 
 /**
