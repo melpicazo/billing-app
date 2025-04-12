@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from "express";
+import express from "express";
 import cors from "cors";
 import "dotenv/config";
 // import pool from "./db/db";
@@ -31,7 +31,7 @@ const port = process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req: express.Request, res: express.Response) => {
   res.json({ message: "Hello from Express!" });
 });
 
