@@ -7,12 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Simple test endpoints
-app.get("/api", (req, res) => {
+// Remove the /api prefix from routes since Netlify adds it
+app.get("/", (req, res) => {
   res.json({ message: "Hello from Express!" });
 });
 
-app.get("/api/test", (req, res) => {
+app.get("/test", (req, res) => {
   res.json({
     message: "Test endpoint working!",
     time: new Date().toISOString(),
@@ -20,7 +20,7 @@ app.get("/api/test", (req, res) => {
   });
 });
 
-app.get("/api/ping", (req, res) => {
+app.get("/ping", (req, res) => {
   res.json({ status: "pong" });
 });
 
