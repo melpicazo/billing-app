@@ -31,7 +31,7 @@ const port = process.env.SERVER_PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req: express.Request, res: express.Response) => {
+app.get("/", (req, res) => {
   res.json({ message: "Hello from Express!" });
 });
 
