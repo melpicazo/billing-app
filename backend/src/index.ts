@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import pool from "./db/db";
+// import pool from "./db/db";
 import uploadRoutes from "./routes/upload.route";
 import healthRoutes from "./routes/health.route";
 
@@ -15,19 +15,19 @@ const app = express();
 /**
  * Check if the database is connected by running a simple query
  */
-pool
-  .query("SELECT 1")
-  .then(() => {
-    logInitializationStep(
-      `Connected to PostgreSQL instance running on port ${
-        process.env.DB_PORT || "5432"
-      }`
-    );
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-    process.exit(1);
-  });
+// pool
+//   .query("SELECT 1")
+//   .then(() => {
+//     logInitializationStep(
+//       `Connected to PostgreSQL instance running on port ${
+//         process.env.DB_PORT || "5432"
+//       }`
+//     );
+//   })
+//   .catch((err) => {
+//     console.error("Unable to connect to the database:", err);
+//     process.exit(1);
+//   });
 
 app.use(cors());
 app.use(express.json());
