@@ -1,7 +1,6 @@
-import express from "express";
+import express, { type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
-import serverless from "serverless-http";
 // import pool from "./db/db";
 // import uploadRoutes from "./routes/upload.route";
 // import billingRoutes from "./routes/billing.route";
@@ -13,7 +12,7 @@ function logInitializationStep(message: string) {
 
 const app = express();
 
-// Check if the database is running
+// // Check if the database is running
 // pool
 //   .query("SELECT 1")
 //   .then(() => {
@@ -32,11 +31,11 @@ app.use(cors());
 app.use(express.json());
 
 // Simple test endpoints
-app.get("/api", (req, res) => {
+app.get("/api", (_req: Request, res: Response) => {
   res.json({ message: "Hello from Express!" });
 });
 
-app.get("/api/test", (req, res) => {
+app.get("/api/test", (_req: Request, res: Response) => {
   res.json({
     message: "Test endpoint working!",
     time: new Date().toISOString(),
@@ -44,11 +43,10 @@ app.get("/api/test", (req, res) => {
   });
 });
 
-app.get("/api/ping", (req, res) => {
+app.get("/api/ping", (_req: Request, res: Response) => {
   res.json({ status: "pong" });
 });
 
-// Keep these commented out for now
 // app.use("/api/upload", uploadRoutes);
 // app.use("/api/billing", billingRoutes);
 
@@ -56,11 +54,8 @@ app.get("/api/ping", (req, res) => {
 if (process.env.NODE_ENV !== "production") {
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
-    logInitializationStep(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
   });
 }
-
-// For Netlify Functions
-export const handler = serverless(app);
 
 export default app;
