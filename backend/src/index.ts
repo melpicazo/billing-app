@@ -42,7 +42,7 @@ app.get("/api/ping", (_req: Request, res: Response) => {
   res.json({ status: "pong" });
 });
 
-app.use("/api/upload", uploadRoutes);
+// app.use("/api/upload", uploadRoutes);
 // app.use("/api/billing", billingRoutes);
 
 // For local development
