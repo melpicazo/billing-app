@@ -1,7 +1,7 @@
 import express, { type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
-// import pool from "./db/db";
+import pool from "./db/db";
 // import uploadRoutes from "./routes/upload.route";
 
 function logInitializationStep(message: string) {
