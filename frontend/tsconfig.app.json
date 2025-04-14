@@ -24,8 +24,9 @@
 
     /* Path Aliases */
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/global/*": ["../global/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../global/*"]
 }

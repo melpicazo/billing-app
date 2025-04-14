@@ -10,6 +10,7 @@ export default defineConfig({
       "@": path.resolve("./src"),
       components: path.resolve("./src/components"),
       shared: path.resolve("./src/shared"),
+      global: path.resolve("./global"),
     },
   },
 });

@@ -34,8 +34,10 @@
 
     /* Path Aliases */
     "paths": {
-      "*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/global/*": ["../global/*"]
     }
   },
+  "include": ["src/**/*", "../types"],
   "exclude": [".env"]
 }
