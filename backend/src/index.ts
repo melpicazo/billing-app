@@ -12,17 +12,15 @@ function logInitializationStep(message: string) {
 const app = express();
 
 /* Check if the database is running */
-// const pool = getConnection();
-// pool
-//   .query("SELECT 1")
-//   .then(() => {
-//     logInitializationStep("Connected to PostgreSQL instance");
-//   })
-//   .catch((err) => {
-//     console.error("Unable to connect to the database:", err);
-//     process.exit(1);
-//   })
-//   .finally(() => pool.end());
+pool
+  .query("SELECT 1")
+  .then(() => {
+    logInitializationStep("Connected to PostgreSQL instance");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+    process.exit(1);
+  });
 
 app.use(cors());
 app.use(express.json());
