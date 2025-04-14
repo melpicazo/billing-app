@@ -4,10 +4,20 @@
  */
 CREATE TABLE IF NOT EXISTS billing_tiers (
   id SERIAL PRIMARY KEY, /* Internal PK (indexing, joins, relationships) */
-  external_tier_id TEXT UNIQUE NOT NULL, /* External Client ID from .csv. Used as FK in clients table */
-  portfolio_aum_min NUMERIC NOT NULL,             
-  portfolio_aum_max NUMERIC NOT NULL,             
-  fee_percentage DECIMAL(5,4) NOT NULL  /* Ensures we store percentages as decimal values */          
+  external_tier_id TEXT UNIQUE NOT NULL /* External Client ID from .csv. Used as FK in clients table */
+);
+
+/**
+ * TIER RANGES TABLE
+ * Contains the ranges and fee percentages for each tier.
+ */
+CREATE TABLE IF NOT EXISTS billing_tier_ranges (
+  id SERIAL PRIMARY KEY,
+  billing_tier_id INTEGER REFERENCES billing_tiers(id), /* FK to billing_tiers. Each tier range belongs to a billing tier */
+  portfolio_aum_min DECIMAL(19,4) NOT NULL,
+  portfolio_aum_max DECIMAL(19,4) NOT NULL,
+  fee_percentage DECIMAL(5,4) NOT NULL,
+  UNIQUE (billing_tier_id, portfolio_aum_min, portfolio_aum_max) /* Validate no duplicate ranges for the same billing tier */
 );
 
 /**
@@ -42,7 +52,7 @@ CREATE TABLE IF NOT EXISTS assets (
   id SERIAL PRIMARY KEY, /* Internal PK (indexing, joins, relationships) */
   portfolio_id INTEGER REFERENCES portfolios(id), /* FK to portfolios(id). Each asset is linked to a portfolio */
   asset_id TEXT NOT NULL, /* We don't need to store an external/internal ID for assets because we are joining by `portfolio_id` and it is not currently referenced anywhere */           
-  asset_value NUMERIC NOT NULL,                  
+  asset_value DECIMAL(19,4) NOT NULL,                  
   currency TEXT NOT NULL,
   date DATE NOT NULL                              
 );

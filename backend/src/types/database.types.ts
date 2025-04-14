@@ -1,6 +1,11 @@
 export interface BillingTier {
   id: number;
   external_tier_id: string;
+}
+
+export interface TierRange {
+  id: number;
+  billing_tier_id: number;
   portfolio_aum_min: number;
   portfolio_aum_max: number;
   fee_percentage: number;
@@ -37,3 +42,31 @@ export enum DataType {
   ASSET = "asset",
   BILLING = "billing_tier",
 }
+
+export const EXCEL_HEADERS = {
+  [DataType.CLIENT]: [
+    "external_client_id",
+    "client_name",
+    "province",
+    "country",
+    "billing_tier_id",
+  ],
+  [DataType.PORTFOLIO]: [
+    "external_client_id",
+    "external_portfolio_id",
+    "currency",
+  ],
+  [DataType.ASSET]: [
+    "date",
+    "external_portfolio_id",
+    "asset_id",
+    "asset_value",
+    "currency",
+  ],
+  [DataType.BILLING]: [
+    "external_tier_id",
+    "portfolio_aum_min",
+    "portfolio_aum_max",
+    "fee_percentage",
+  ],
+};
