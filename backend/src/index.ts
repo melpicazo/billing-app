@@ -47,12 +47,9 @@ app.get("/api/ping", (_req: Request, res: Response) => {
 // app.use("/api/upload", uploadRoutes);
 // app.use("/api/billing", billingRoutes);
 
-// Only start server in non-serverless environments
-if (process.env.NODE_ENV !== "production") {
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    logInitializationStep(`Server running at http://localhost:${port}`);
-  });
-}
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  logInitializationStep(`Server running on port ${port}`);
+});
 
 export default app;
