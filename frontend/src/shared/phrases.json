@@ -1,0 +1,10 @@
+{
+  "globals": {
+    "meiaCapital": "Meia Capital"
+  },
+  "navigation": {
+    "overview": "Overview",
+    "clients": "Clients"
+  },
+  "fileUpload": {}
+}

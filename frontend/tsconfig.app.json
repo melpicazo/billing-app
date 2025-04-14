@@ -24,8 +24,7 @@
 
     /* Path Aliases */
     "paths": {
-      "*": ["./src/*"],
-      "styled-system/*": ["./styled-system/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

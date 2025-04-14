@@ -1,7 +1,24 @@
-export const Navigation = () => {
+import { DesktopMenu } from "./DesktopMenu";
+import { MobileMenu } from "./MobileMenu";
+import { Tab } from "@/shared/types";
+
+interface NavigationProps {
+  activeTab: Tab;
+  onTabChange: (tabId: Tab) => void;
+}
+
+export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
+  const handleTabClick = (tabId: Tab) => {
+    onTabChange(tabId);
+  };
+
   return (
-    <nav className="bg-blue-300">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"></div>
-    </nav>
+    <>
+      {/* Mobile sidebar */}
+      <MobileMenu activeTab={activeTab} onTabChange={handleTabClick} />
+
+      {/* Desktop sidebar */}
+      <DesktopMenu activeTab={activeTab} onTabChange={handleTabClick} />
+    </>
   );
 };
