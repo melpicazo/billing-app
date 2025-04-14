@@ -92,18 +92,24 @@ export class UploadService {
     }
   }
 
+  /**
+   * Process the sheets in the order of the PROCESS_ORDER
+   * @param sheets - The sheets to process
+   * @param client - The client to use
+   * @param results - The results of the file processing
+   * @param processedTypes - The types of data that have been processed
+   */
   private async processSheets(
-    sheets: any,
+    sheets: Map<DataType, XLSX.WorkSheet>,
     client: PoolClient,
     results: FileProcessResult[],
-    processedTypes: Set<DataType>,
-    file: Express.Multer.File
+    processedTypes: Set<DataType>
   ): Promise<void> {
     for (const type of this.PROCESS_ORDER) {
       const sheet = sheets.get(type);
       if (!sheet) {
         results.push({
-          filename: `${file.originalname} - ${type}`,
+          filename: `${type}`,
           status: "error",
           message: `Missing required sheet for ${type}`,
         });
@@ -111,24 +117,59 @@ export class UploadService {
       }
 
       try {
-        const data = this.getSheetData(sheet, type);
-        await this.processData(type, data, client);
+        /* Get data for the sheet and skip the header row for the import */
+        const data = XLSX.utils.sheet_to_json(sheet, {
+          header: [...EXCEL_HEADERS[type]],
+          range: 1,
+        });
+
+        /* Process the data and add to the processed types*/
+        await this.processDataTypes(type, data, client);
         processedTypes.add(type);
 
         /* Add success result */
         results.push({
-          filename: `${file.originalname} - ${type}`,
+          filename: `${type}`,
           status: "success",
         });
       } catch (error) {
         /* Add error result and rethrow */
         results.push({
-          filename: `${file.originalname} - ${type}`,
+          filename: `${type}`,
           status: "error",
           message: error instanceof Error ? error.message : "Unknown error",
         });
         throw error;
       }
+    }
+  }
+
+  /**
+   * Process the data based on the data type
+   * We need to typecast `data` to the correct type because parsing it
+   * through the xlsx library returns an unknown type
+   * @param type - The type of data to process
+   * @param data - The data to process
+   * @param client - The client to use
+   */
+  private async processDataTypes(
+    type: DataType,
+    data: unknown[],
+    client: PoolClient
+  ): Promise<void> {
+    switch (type) {
+      case DataType.BILLING:
+        await this.parseBillingTiers(data as ExcelBillingTier[], client);
+        break;
+      case DataType.CLIENT:
+        await this.parseClients(data as ExcelClient[], client);
+        break;
+      case DataType.PORTFOLIO:
+        await this.parsePortfolios(data as ExcelPortfolio[], client);
+        break;
+      case DataType.ASSET:
+        await this.parseAssets(data as ExcelAsset[], client);
+        break;
     }
   }
 
@@ -162,7 +203,8 @@ export class UploadService {
       ])
     );
 
-    await this.processSheets(sheets, client, results, processedTypes, file);
+    /* Process the sheets in the order of the PROCESS_ORDER */
+    await this.processSheets(sheets, client, results, processedTypes);
   }
 
   /**
@@ -198,33 +240,11 @@ export class UploadService {
         });
         continue;
       }
-
       sheets.set(dataType, worksheet);
     }
 
-    /* Process in specific order */
-    for (const type of this.PROCESS_ORDER) {
-      const sheet = sheets.get(type);
-      if (!sheet) continue;
-
-      try {
-        const data = this.getSheetData(sheet, type);
-        await this.processData(type, data, client);
-        processedTypes.add(type);
-
-        results.push({
-          filename: `${type}.csv`,
-          status: "success",
-        });
-      } catch (error) {
-        results.push({
-          filename: `${type}.csv`,
-          status: "error",
-          message: error instanceof Error ? error.message : "Unknown error",
-        });
-        throw error;
-      }
-    }
+    /* Process the sheets in the order of the PROCESS_ORDER */
+    await this.processSheets(sheets, client, results, processedTypes);
   }
 
   /**
@@ -232,46 +252,25 @@ export class UploadService {
    * @param name - The name of the file
    * @returns The data type of the file as the `DataType`
    */
-  private getDataTypeFromName(name: string): DataType | null {
+  private getDataTypeFromName(name: string): DataType {
     for (const type of this.REQUIRED_TYPES) {
       if (name.toLowerCase().includes(type)) {
         return type;
       }
     }
-    return null;
+    throw new Error(`Invalid sheet name: ${name}`);
   }
 
+  /**
+   * Validate that all required types were processed
+   * @param processedTypes - The types of data that have been processed
+   */
   private validateRequiredTypes(processedTypes: Set<DataType>): void {
     const missingTypes = this.REQUIRED_TYPES.filter(
       (type) => !processedTypes.has(type)
     );
     if (missingTypes.length > 0) {
       throw new Error(`Missing required data: ${missingTypes.join(", ")}`);
-    }
-  }
-
-  private async processData(
-    type: DataType,
-    data: unknown[],
-    client: PoolClient
-  ): Promise<void> {
-    /* Process billing tiers first since other tables depend on it */
-    if (type === DataType.BILLING) {
-      await this.parseBillingTiers(data as ExcelBillingTier[], client);
-      return;
-    }
-
-    /* Then process the rest in order of dependencies */
-    switch (type) {
-      case DataType.CLIENT:
-        await this.parseClients(data as ExcelClient[], client);
-        break;
-      case DataType.PORTFOLIO:
-        await this.parsePortfolios(data as ExcelPortfolio[], client);
-        break;
-      case DataType.ASSET:
-        await this.parseAssets(data as ExcelAsset[], client);
-        break;
     }
   }
 
@@ -286,24 +285,32 @@ export class UploadService {
     client: PoolClient
   ): Promise<void> {
     for (const row of data) {
-      const { rows } = await client.query(
-        `SELECT id FROM billing_tiers WHERE external_tier_id = $1`,
-        [row.billing_tier_id]
-      );
-      if (!rows.length) {
-        throw new Error(`Billing tier ${row.billing_tier_id} not found`);
+      try {
+        const { rows } = await client.query(
+          `SELECT id FROM billing_tiers WHERE external_tier_id = $1`,
+          [row.billing_tier_id]
+        );
+        if (!rows.length) {
+          throw new Error(`Billing tier ${row.billing_tier_id} not found`);
+        }
+        await client.query(
+          `INSERT INTO clients (external_client_id, client_name, province, country, billing_tier_id)
+           VALUES ($1, $2, $3, $4, $5)`,
+          [
+            row.external_client_id,
+            row.client_name,
+            row.province,
+            row.country,
+            rows[0].id,
+          ]
+        );
+      } catch (error) {
+        console.error(
+          `Error processing client ${row.external_client_id}:`,
+          error
+        );
+        throw error;
       }
-      await client.query(
-        `INSERT INTO clients (external_client_id, client_name, province, country, billing_tier_id)
-         VALUES ($1, $2, $3, $4, $5)`,
-        [
-          row.external_client_id,
-          row.client_name,
-          row.province,
-          row.country,
-          rows[0].id,
-        ]
-      );
     }
   }
 
@@ -324,11 +331,12 @@ export class UploadService {
           [row.external_client_id]
         );
 
+        /* If the client is not found, skip inserting the portfolio */
         if (!rows.length) {
           console.warn(
             `Skipping portfolio ${row.external_portfolio_id}: Client ${row.external_client_id} not found`
           );
-          continue; // Skip this portfolio but continue processing others
+          continue;
         }
 
         await client.query(
@@ -341,7 +349,6 @@ export class UploadService {
           `Error processing portfolio ${row.external_portfolio_id}:`,
           error
         );
-        // Decide if you want to throw or continue
         throw error;
       }
     }
@@ -364,11 +371,12 @@ export class UploadService {
           [row.external_portfolio_id]
         );
 
+        /* If the portfolio is not found, skip inserting the asset */
         if (!rows.length) {
           console.warn(
             `Skipping asset ${row.asset_id}: Portfolio ${row.external_portfolio_id} not found`
           );
-          continue; // Skip this asset but continue processing others
+          continue;
         }
 
         await client.query(
@@ -450,12 +458,5 @@ export class UploadService {
         ]
       );
     }
-  }
-
-  private getSheetData(worksheet: XLSX.WorkSheet, type: DataType): unknown[] {
-    return XLSX.utils.sheet_to_json(worksheet, {
-      header: [...EXCEL_HEADERS[type]],
-      range: 1 /* Skip the header row for the import */,
-    });
   }
 }
