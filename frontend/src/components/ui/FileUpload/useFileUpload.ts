@@ -1,3 +1,4 @@
+import { useBillingContext } from "@/components/contexts/BillingContext";
 import { useState } from "react";
 
 interface UploadResult {
@@ -15,6 +16,7 @@ export const useFileUpload = () => {
   const [files, setFiles] = useState<FileList | null>(null);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<UploadResult[]>([]);
+  const { refetchAll } = useBillingContext();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -44,6 +46,7 @@ export const useFileUpload = () => {
 
       if (Array.isArray(data)) {
         setResults(data);
+        await refetchAll();
       } else if (data.error) {
         setResults([
           {

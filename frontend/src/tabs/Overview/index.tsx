@@ -3,9 +3,9 @@ import phrases from "@/shared/phrases.json";
 import { useBillingContext } from "@/components";
 
 export const Overview = () => {
-  const { hasData, statusError, firmTotals, isLoadingStatus } =
+  const { hasData, statusError, isLoadingStatus, firmTotals } =
     useBillingContext();
-
+  console.log(firmTotals);
   if (statusError) {
     return (
       <div className="p-4 text-red-500">
@@ -25,9 +25,8 @@ export const Overview = () => {
           "Loading..."
         ) : (
           <>
-            {!hasData || !firmTotals ? (
-              <FileUpload />
-            ) : (
+            <FileUpload />
+            {hasData && (
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <div className="h-48 rounded-lg border-2 border-dashed border-gray-300 p-4">
                   <p className="text-center text-gray-500">Revenue Overview</p>

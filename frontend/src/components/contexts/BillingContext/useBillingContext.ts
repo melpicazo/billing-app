@@ -13,6 +13,7 @@ interface BillingContextValues {
   isLoadingTotals: boolean;
   statusError: Error | null;
   totalsError: Error | null;
+  refetchAll: () => Promise<void>;
 }
 
 export const BillingContext = createContext<BillingContextValues | null>(null);

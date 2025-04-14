@@ -1,18 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchSystemStatus, fetchFirmTotals } from "./functions";
+import { queryKeys } from "./types";
+import { fetchFirmTotals, fetchSystemStatus } from "./functions";
 
 export function useSystemStatus() {
   return useQuery({
-    queryKey: ["systemStatus"],
+    queryKey: queryKeys.systemStatus,
     queryFn: fetchSystemStatus,
   });
 }
 
 export function useFirmTotals() {
   return useQuery({
-    queryKey: ["firmTotals"],
+    queryKey: queryKeys.firmTotals,
     queryFn: fetchFirmTotals,
-    // Only fetch if we have data in the system
-    enabled: useSystemStatus().data ?? false,
   });
 }
