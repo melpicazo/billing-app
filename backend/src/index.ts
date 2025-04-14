@@ -2,7 +2,7 @@ import express, { type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import pool from "./db/db";
-// import uploadRoutes from "./routes/upload.route";
+import uploadRoutes from "./routes/upload.route";
 
 function logInitializationStep(message: string) {
   const GREEN_COLOR_FORMATTING = "\x1b[32m%s\x1b[0m";
@@ -42,7 +42,7 @@ app.get("/api/ping", (_req: Request, res: Response) => {
   res.json({ status: "pong" });
 });
 
-// app.use("/api/upload", uploadRoutes);
+app.use("/api/upload", uploadRoutes);
 // app.use("/api/billing", billingRoutes);
 
 const port = process.env.PORT || 3000;
