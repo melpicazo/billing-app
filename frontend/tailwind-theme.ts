@@ -4,6 +4,7 @@
 const theme = {
   fontFamily: {
     body: ["var(--font-inter)"],
+    heading: ["var(--font-outfit)"],
   },
 };
 
