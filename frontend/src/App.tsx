@@ -24,7 +24,7 @@ export default function App() {
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
 
       {/* Main Content */}
-      <div className="flex-1">{renderContent()}</div>
+      <div className="w-full h-full">{renderContent()}</div>
     </div>
   );
 }

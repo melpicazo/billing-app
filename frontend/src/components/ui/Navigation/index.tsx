@@ -1,6 +1,6 @@
+import { Tab } from "@/shared/types";
 import { DesktopMenu } from "./DesktopMenu";
 import { MobileMenu } from "./MobileMenu";
-import { Tab } from "@/shared/types";
 
 interface NavigationProps {
   activeTab: Tab;

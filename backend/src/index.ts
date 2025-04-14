@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import pool from "./db/db";
 import uploadRoutes from "./routes/upload.route";
+import billingRoutes from "./routes/billing.route";
 
 function logInitializationStep(message: string) {
   const GREEN_COLOR_FORMATTING = "\x1b[32m%s\x1b[0m";
@@ -43,7 +44,7 @@ app.get("/api/ping", (_req: Request, res: Response) => {
 });
 
 app.use("/api/upload", uploadRoutes);
-// app.use("/api/billing", billingRoutes);
+app.use("/api/billing", billingRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

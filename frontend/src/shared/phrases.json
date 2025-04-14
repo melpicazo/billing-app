@@ -6,5 +6,14 @@
     "overview": "Overview",
     "clients": "Clients"
   },
-  "fileUpload": {}
+  "overview": {
+    "title": "Overview",
+    "description": "Welcome to the Meia Capital internal portal – a centralilzed hub to view and analyze our clients, portfolios, and key financial metrics! Visualize your data with ease and stay informed with the latest, real-time insights."
+  },
+  "fileUpload": {
+    "title": "No billing data found",
+    "description": "Looks like you haven't imported any data yet! Upload a single Excel file (.xlsx) containing all data, or four CSV files (.csv) for clients, portfolios, assets, and billing tiers.",
+    "ctaButton": "Begin data import",
+    "uploadFiles": "Upload File(s)"
+  }
 }
