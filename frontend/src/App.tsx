@@ -1,10 +1,7 @@
-import { useState } from "react";
 import "./App.css";
 import { FileUpload } from "./components/FileUpload";
 
 export default function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
