@@ -1,8 +1,8 @@
 import express, { type Request, type Response } from "express";
 import cors from "cors";
 import "dotenv/config";
+import { getConnection } from "./db/db";
 // import uploadRoutes from "./routes/upload.route";
-import pool from "db/db";
 
 function logInitializationStep(message: string) {
   const GREEN_COLOR_FORMATTING = "\x1b[32m%s\x1b[0m";
@@ -12,6 +12,7 @@ function logInitializationStep(message: string) {
 const app = express();
 
 /* Check if the database is running */
+// const pool = getConnection();
 // pool
 //   .query("SELECT 1")
 //   .then(() => {
@@ -20,7 +21,8 @@ const app = express();
 //   .catch((err) => {
 //     console.error("Unable to connect to the database:", err);
 //     process.exit(1);
-//   });
+//   })
+//   .finally(() => pool.end());
 
 app.use(cors());
 app.use(express.json());
@@ -45,7 +47,7 @@ app.get("/api/ping", (_req: Request, res: Response) => {
 // app.use("/api/upload", uploadRoutes);
 // app.use("/api/billing", billingRoutes);
 
-// For local development
+// Only start server in non-serverless environments
 if (process.env.NODE_ENV !== "production") {
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
