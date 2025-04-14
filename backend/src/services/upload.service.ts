@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { getConnection } from "../db/db";
+import pool from "../db/db";
 import { DataType, EXCEL_HEADERS } from "../types/database.types";
 import { type PoolClient } from "pg";
 import {
@@ -49,7 +49,6 @@ export class UploadService {
     const fileProcessResults: FileProcessResult[] = [];
 
     /* Connect to the database */
-    const pool = getConnection();
     const client = await pool.connect();
 
     /* Create a set to store the processed data types */
