@@ -1,5 +1,6 @@
 import { useResetData } from "@/api/queries";
-import { CTAButton, Modal, useBillingContext } from "@/components";
+import { useBillingContext } from "@/components/contexts";
+import { CTAButton, Modal } from "@/components/ui";
 import phrases from "@/shared/phrases.json";
 import { useState } from "react";
 

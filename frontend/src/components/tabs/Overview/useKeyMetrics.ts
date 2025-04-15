@@ -1,4 +1,4 @@
-import { useBillingContext } from "@/components";
+import { useBillingContext } from "@/components/contexts";
 import phrases from "@/shared/phrases.json";
 import { formatMoney, formatPercent } from "@/shared/utils";
 import { DollarCircle, StatsUpSquare, PercentageCircle } from "iconoir-react";

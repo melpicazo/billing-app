@@ -1,5 +1,5 @@
 import phrases from "./shared/phrases.json";
-import { Navigation, TabLayout } from "./components";
+import { Navigation, TabLayout } from "./components/ui";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Tab } from "./shared/types";
 

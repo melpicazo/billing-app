@@ -1,6 +1,6 @@
 import { flexRender, type Table } from "@tanstack/react-table";
 import { cn } from "@/shared/utils";
-import { LoadingSpinner } from "@/components";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 interface DataTableProps<T> {
   table: Table<T>;

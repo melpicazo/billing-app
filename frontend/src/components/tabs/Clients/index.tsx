@@ -1,7 +1,8 @@
 import { ClientsTable } from "./ClientsTable";
 import { BillingTiers } from "./BillingTiers";
-import { useBillingContext } from "@/components/contexts/BillingContext";
-import { EmptyState } from "@/components";
+import { useBillingContext } from "@/components/contexts";
+import { EmptyState } from "@/components/ui";
+
 export const Clients = () => {
   const { hasData } = useBillingContext();
   if (!hasData) return <EmptyState />;

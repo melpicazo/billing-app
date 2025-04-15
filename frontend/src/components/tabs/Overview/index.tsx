@@ -1,5 +1,5 @@
-import { FileUpload } from "@/components";
-import { useBillingContext } from "@/components";
+import { FileUpload } from "@/components/ui";
+import { useBillingContext } from "@/components/contexts";
 import { useKeyMetrics } from "./useKeyMetrics";
 import { Card } from "@/components/ui/Card";
 

@@ -1,5 +1,5 @@
-import { EmptyState } from "@/components";
-import { useBillingContext } from "@/components/contexts/BillingContext";
+import { EmptyState } from "@/components/ui";
+import { useBillingContext } from "@/components/contexts";
 import { DataTable } from "@/components/ui/Table";
 import { useAssetsTable } from "./useAssetsTable";
 

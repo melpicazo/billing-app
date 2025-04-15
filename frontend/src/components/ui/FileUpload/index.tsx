@@ -1,9 +1,10 @@
 import phrases from "@/shared/phrases.json";
 import { useState } from "react";
-import { useBillingContext } from "@/components";
+import { useBillingContext } from "@/components/contexts";
 import { FileUploadModal } from "./FileUploadModal";
 import { Skeleton } from "../Skeleton";
 import { WarningCircleSolid } from "iconoir-react";
+
 export const FileUpload = () => {
   const { hasData } = useBillingContext();
 

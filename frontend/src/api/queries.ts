@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "./types";
+import { queryKeys } from "./keys";
 import {
   fetchClientTotals,
   fetchClientPortfolios,

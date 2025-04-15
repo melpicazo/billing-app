@@ -1,4 +1,4 @@
-import { useBillingContext } from "@/components/contexts/BillingContext";
+import { useBillingContext } from "@/components/contexts";
 import { useState } from "react";
 
 interface UploadResult {
