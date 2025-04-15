@@ -35,6 +35,12 @@
       "totalFees": "Total Fees (CAD)",
       "averageFeeRate": "Effective Fee Rate",
       "portfolios": "Portfolios"
+    },
+    "portfolios": {
+      "portfolioId": "Portfolio ID",
+      "aum": "AUM (CAD)",
+      "fees": "Fees (CAD)",
+      "feeRate": "Fee Rate"
     }
   },
   "fileUpload": {

@@ -2,6 +2,7 @@ import { useClientPortfolios } from "@/api/queries";
 import { LoadingSpinner, Modal } from "@/components";
 import { ClientTotals } from "@/global/types";
 import { formatMoney, formatPercent } from "@/shared/utils";
+import phrases from "@/shared/phrases.json";
 
 interface ClientDetailsModalProps {
   selectedClient: ClientTotals | null;
@@ -37,10 +38,22 @@ export const ClientDetailsModal = ({
             <div className="flex flex-col gap-4">
               {portfolios.map((portfolio) => (
                 <SummaryCard key={portfolio.portfolio_id}>
-                  <p>Portfolio ID: {portfolio.external_portfolio_id}</p>
-                  <p>AUM: {formatMoney(portfolio.total_aum_cad)}</p>
-                  <p>Fees: {formatMoney(portfolio.total_fees_cad)}</p>
-                  <p>Fee Rate: {formatPercent(portfolio.effective_fee_rate)}</p>
+                  <p>
+                    {phrases.clients.portfolios.portfolioId}:{" "}
+                    {portfolio.external_portfolio_id}
+                  </p>
+                  <p>
+                    {phrases.clients.portfolios.aum}:{" "}
+                    {formatMoney(portfolio.total_aum_cad)}
+                  </p>
+                  <p>
+                    {phrases.clients.portfolios.fees}:{" "}
+                    {formatMoney(portfolio.total_fees_cad)}
+                  </p>
+                  <p>
+                    {phrases.clients.portfolios.feeRate}:{" "}
+                    {formatPercent(portfolio.effective_fee_rate)}
+                  </p>
                 </SummaryCard>
               ))}
               {portfolios.length === 0 && (
