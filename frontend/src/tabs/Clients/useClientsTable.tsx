@@ -43,10 +43,6 @@ export const useClientsTable = () => {
       header: phrases.clients.table.averageFeeRate,
       cell: (info) => formatPercent(info.getValue()),
     }),
-    columnHelper.accessor("num_portfolios", {
-      header: phrases.clients.table.portfolios,
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.display({
       id: "details",
       header: phrases.clients.table.additionalInfo,

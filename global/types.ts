@@ -13,7 +13,6 @@ export interface ClientTotals {
   total_aum_cad: number;
   total_fees_cad: number;
   effective_fee_rate: number;
-  num_portfolios: number;
 }
 
 export interface Portfolio {

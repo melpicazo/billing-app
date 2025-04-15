@@ -47,25 +47,28 @@ WITH client_portfolio_totals AS (
     c.id as client_id,
     c.external_client_id,
     c.client_name,
+    c.billing_tier_id as tier_id,
+    bt.external_tier_id,
     SUM(tp.portfolio_value_cad) as total_aum_cad,
-    SUM(tp.portfolio_value_cad * tp.fee_percentage) as total_fees_cad,
-    COUNT(tp.portfolio_id) as num_portfolios
+    SUM(tp.portfolio_value_cad * tp.fee_percentage) as total_fees_cad
   FROM clients c
   LEFT JOIN totals_portfolio tp ON tp.client_id = c.id
-  GROUP BY c.id, c.external_client_id, c.client_name
+  LEFT JOIN billing_tiers bt ON bt.id = c.billing_tier_id
+  GROUP BY c.id, c.external_client_id, c.client_name, c.billing_tier_id, bt.external_tier_id
 )
 SELECT 
   client_id,
   external_client_id,
   client_name,
+  tier_id,
+  external_tier_id,
   COALESCE(total_aum_cad, 0) as total_aum_cad,
   COALESCE(total_fees_cad, 0) as total_fees_cad,
   CASE 
     WHEN COALESCE(total_aum_cad, 0) > 0 
     THEN (total_fees_cad / total_aum_cad)
     ELSE 0 
-  END as effective_fee_rate,
-  num_portfolios
+  END as effective_fee_rate
 FROM client_portfolio_totals
 ORDER BY total_aum_cad DESC;
 
@@ -75,7 +78,7 @@ ORDER BY total_aum_cad DESC;
  * - Total AUM across all portfolios
  * - Total revenue from all client fees
  * - Average effective fee rate across all AUM
- * - Total number of clients and portfolios
+ * - Total number of clients
  */
 CREATE OR REPLACE VIEW totals_firm AS
 SELECT 
@@ -87,6 +90,5 @@ SELECT
     ELSE 0 
   END as firm_average_fee_rate,
   COUNT(DISTINCT client_id) as num_clients,
-  SUM(num_portfolios) as num_portfolios,
   CURRENT_DATE as calculation_date
 FROM totals_client;
