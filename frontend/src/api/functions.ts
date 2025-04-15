@@ -1,10 +1,10 @@
 import {
+  Asset,
   BillingTier,
   ClientTotals,
   FirmTotals,
   Portfolio,
-  Asset,
-} from "@/api/types";
+} from "./types";
 
 export const fetchSystemStatus = async (): Promise<boolean> => {
   const response = await fetch(
