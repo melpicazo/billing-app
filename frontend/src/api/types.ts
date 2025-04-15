@@ -37,3 +37,11 @@ export interface BillingTier {
   external_tier_id: string;
   ranges: TierRange[];
 }
+
+export interface Asset {
+  asset_id: string;
+  external_portfolio_id: string;
+  asset_value: number;
+  currency: string;
+  date: string;
+}
