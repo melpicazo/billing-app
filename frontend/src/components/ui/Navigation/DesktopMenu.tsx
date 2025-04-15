@@ -8,7 +8,7 @@ interface DesktopProps {
 
 export const DesktopMenu = ({ activeTab, onTabChange }: DesktopProps) => {
   return (
-    <div className="hidden md:flex max-w-[350px] flex-col">
+    <div className="hidden md:flex w-[350px] flex-shrink-0 flex-col">
       <div className="flex flex-col flex-grow border-r border-gray-200 sidebar-gradient">
         {/* Logo area */}
         <div className="p-4 flex items-center justify-center">

@@ -1,79 +1,15 @@
-import { useState } from "react";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { InfoCircle } from "iconoir-react";
+import { flexRender } from "@tanstack/react-table";
 import { Modal } from "@/components/ui/Modal";
-import { useClientTotals, useClientPortfolios } from "@/api/queries";
-import { formatMoney, formatPercent } from "@/shared/utils";
-import { ClientTotals } from "@/global/types";
-
-const columnHelper = createColumnHelper<ClientTotals>();
+import { useClientPortfolios } from "@/api/queries";
+import { cn, formatMoney, formatPercent } from "@/shared/utils";
+import { useClientsTable } from "./useClientsTable";
 
 export function ClientsTable() {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [selectedClient, setSelectedClient] = useState<ClientTotals | null>(
-    null
-  );
+  const { table, selectedClient, setSelectedClient, isLoading, error } =
+    useClientsTable();
 
-  const { data: clientTotals = [], isLoading, error } = useClientTotals();
   const { data: portfolios = [], isLoading: isLoadingPortfolios } =
     useClientPortfolios(selectedClient?.client_id ?? null);
-
-  const columns = [
-    columnHelper.accessor("external_client_id", {
-      header: "Client ID",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("client_name", {
-      header: "Name",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("total_aum_cad", {
-      header: "Total AUM",
-      cell: (info) => formatMoney(info.getValue()),
-    }),
-    columnHelper.accessor("total_fees_cad", {
-      header: "Total Fees",
-      cell: (info) => formatMoney(info.getValue()),
-    }),
-    columnHelper.accessor("effective_fee_rate", {
-      header: "Effective Rate",
-      cell: (info) => formatPercent(info.getValue()),
-    }),
-    columnHelper.accessor("num_portfolios", {
-      header: "Portfolios",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.display({
-      id: "actions",
-      header: "Info",
-      cell: (info) => (
-        <button
-          className="p-2 hover:bg-gray-100 rounded-full"
-          onClick={() => setSelectedClient(info.row.original)}
-        >
-          <InfoCircle className="h-4 w-4" />
-        </button>
-      ),
-    }),
-  ];
-
-  const table = useReactTable({
-    data: clientTotals,
-    columns,
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
 
   if (isLoading) {
     return (
@@ -93,28 +29,48 @@ export function ClientsTable() {
 
   return (
     <>
-      <div className="rounded-md border">
-        <table className="w-full">
+      <div className="rounded-md border overflow-x-auto">
+        <table className="w-full bg-white">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className="border-b px-4 py-2 text-left font-medium"
-                    onClick={header.column.getToggleSortingHandler()}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {{
-                      asc: " ↑",
-                      desc: " ↓",
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </th>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  const canSort = header.column.getCanSort();
+                  return (
+                    <th
+                      key={header.id}
+                      className={cn(
+                        "border-b px-4 py-2 text-left font-heading font-medium whitespace-nowrap select-none",
+                        canSort ? "cursor-pointer" : "cursor-default"
+                      )}
+                      onClick={
+                        canSort
+                          ? header.column.getToggleSortingHandler()
+                          : undefined
+                      }
+                    >
+                      <div
+                        className={cn("flex items-center gap-2", {
+                          "hover:text-blue-600 transition-all duration-300":
+                            canSort,
+                        })}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {canSort && (
+                          <span className="inline-block w-4">
+                            {{
+                              asc: "↑",
+                              desc: "↓",
+                            }[header.column.getIsSorted() as string] ?? ""}
+                          </span>
+                        )}
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
             ))}
           </thead>
@@ -122,7 +78,12 @@ export function ClientsTable() {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="border-b hover:bg-gray-50">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-4 py-2">
+                  <td
+                    key={cell.id}
+                    className={cn("px-4 py-2 whitespace-nowrap", {
+                      "text-center": cell.id.includes("details"),
+                    })}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
