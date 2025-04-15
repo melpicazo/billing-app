@@ -43,6 +43,14 @@
       "feeRate": "Fee Rate"
     }
   },
+  "assets": {
+    "title": "Assets",
+    "description": "View and analyze the assets under management (AUM) under Meia Capital's control. This includes all assets held in custody for our clients, and their corresponding portfolios."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure your settings here."
+  },
   "fileUpload": {
     "title": "No billing data found",
     "description": "Looks like you haven't imported any data yet! Upload a single Excel file (.xlsx) containing all data, or four CSV files (.csv) for clients, portfolios, assets, and billing tiers.",

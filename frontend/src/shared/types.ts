@@ -1,1 +1,1 @@
-export type Tab = "overview" | "clients";
+export type Tab = "overview" | "clients" | "assets" | "settings";

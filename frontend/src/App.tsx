@@ -2,8 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import { Navigation, TabLayout } from "./components";
 import { Tab } from "./shared/types";
-import { Overview, Clients } from "./tabs";
+import { Overview, Clients, Settings, Assets } from "./tabs";
 import phrases from "./shared/phrases.json";
+
 const TabConfig: Record<
   Tab,
   {
@@ -21,6 +22,16 @@ const TabConfig: Record<
     title: phrases.clients.title,
     description: phrases.clients.description,
     component: <Clients />,
+  },
+  assets: {
+    title: phrases.assets.title,
+    description: phrases.assets.description,
+    component: <Assets />,
+  },
+  settings: {
+    title: phrases.settings.title,
+    description: phrases.settings.description,
+    component: <Settings />,
   },
 };
 
