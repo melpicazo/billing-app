@@ -60,4 +60,30 @@ export class BillingService {
       throw error;
     }
   }
+
+  async getBillingTiers() {
+    try {
+      const query = `
+        SELECT 
+          bt.id,
+          bt.external_tier_id,
+          json_agg(
+            json_build_object(
+              'portfolio_aum_min', btr.portfolio_aum_min,
+              'portfolio_aum_max', btr.portfolio_aum_max,
+              'fee_percentage', btr.fee_percentage
+            ) ORDER BY btr.portfolio_aum_min
+          ) as ranges
+        FROM billing_tiers bt
+        LEFT JOIN billing_tier_ranges btr ON btr.billing_tier_id = bt.id
+        GROUP BY bt.id, bt.external_tier_id
+        ORDER BY bt.external_tier_id
+      `;
+      const result = await pool.query(query);
+      return result.rows;
+    } catch (error) {
+      console.error("Error in getBillingTiers:", error);
+      throw error;
+    }
+  }
 }

@@ -1,4 +1,9 @@
-import { ClientTotals, FirmTotals, Portfolio } from "@/global/types";
+import {
+  BillingTier,
+  ClientTotals,
+  FirmTotals,
+  Portfolio,
+} from "@/global/types";
 
 export const fetchSystemStatus = async (): Promise<boolean> => {
   const response = await fetch(
@@ -40,6 +45,16 @@ export const fetchClientPortfolios = async (
   );
   if (!response.ok) {
     throw new Error("Failed to fetch client portfolios");
+  }
+  return response.json();
+};
+
+export const fetchBillingTiers = async (): Promise<BillingTier[]> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_SERVER_URL}/billing/tiers`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch billing tiers with ranges");
   }
   return response.json();
 };

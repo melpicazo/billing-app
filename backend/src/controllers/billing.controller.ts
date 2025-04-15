@@ -57,4 +57,13 @@ export class BillingController {
       res.status(500).json({ error: "Failed to retrieve client portfolios" });
     }
   };
+
+  getBillingTiers = async (req: Request, res: Response) => {
+    try {
+      const tiers = await this.billingService.getBillingTiers();
+      res.json(tiers);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve billing tiers" });
+    }
+  };
 }

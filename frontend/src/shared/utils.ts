@@ -5,10 +5,10 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export const formatMoney = (value: number | undefined) => {
-  if (!value) return "";
+export const formatMoney = (value: number | undefined, decimals?: number) => {
+  if (!value) return "$0";
   return `$${Number(value)
-    .toFixed(2)
+    .toFixed(decimals ?? 2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 };
 

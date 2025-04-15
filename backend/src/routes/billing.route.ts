@@ -21,4 +21,7 @@ router.get(
   billingController.getPortfolioTotals
 );
 
+// Get billing tiers
+router.get("/tiers", billingController.getBillingTiers);
+
 export default router;
