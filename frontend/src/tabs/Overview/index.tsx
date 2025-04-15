@@ -36,7 +36,7 @@ export const Overview = () => {
                         </h4>
                         <div className="flex flex-col gap-2">
                           <p className="text-sm">{metric.description}</p>
-                          <p className="text-lg tracking-wider">
+                          <p className="text-xl font-heading tracking-wider text-emerald-600">
                             {metric.value}
                           </p>
                         </div>
