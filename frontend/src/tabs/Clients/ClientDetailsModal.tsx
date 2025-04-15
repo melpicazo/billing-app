@@ -29,19 +29,6 @@ export const ClientDetailsModal = ({
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
-          <h4 className="font-semibold">Client Summary</h4>
-          <SummaryCard>
-            <p>Client ID: {selectedClient.external_client_id}</p>
-            <p>Total AUM: {formatMoney(selectedClient.total_aum_cad)}</p>
-            <p>Total Fees: {formatMoney(selectedClient.total_fees_cad)}</p>
-            <p>
-              Effective Fee Rate:{" "}
-              {formatPercent(selectedClient.effective_fee_rate)}
-            </p>
-          </SummaryCard>
-        </div>
-
-        <div className="flex flex-col gap-4">
           <h4 className="font-semibold">Portfolios</h4>
 
           {isLoadingPortfolios ? (
@@ -53,10 +40,7 @@ export const ClientDetailsModal = ({
                   <p>Portfolio ID: {portfolio.external_portfolio_id}</p>
                   <p>AUM: {formatMoney(portfolio.total_aum_cad)}</p>
                   <p>Fees: {formatMoney(portfolio.total_fees_cad)}</p>
-                  <p>
-                    Effective Rate:{" "}
-                    {formatPercent(portfolio.effective_fee_rate)}
-                  </p>
+                  <p>Fee Rate: {formatPercent(portfolio.effective_fee_rate)}</p>
                 </SummaryCard>
               ))}
               {portfolios.length === 0 && (

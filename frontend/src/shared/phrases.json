@@ -34,8 +34,7 @@
       "totalAum": "Total AUM (CAD)",
       "totalFees": "Total Fees (CAD)",
       "averageFeeRate": "Effective Fee Rate",
-      "portfolios": "Portfolios",
-      "additionalInfo": "Additional Info"
+      "portfolios": "Portfolios"
     }
   },
   "fileUpload": {

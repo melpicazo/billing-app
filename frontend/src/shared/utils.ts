@@ -7,7 +7,7 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export const formatMoney = (value: number | undefined) => {
   if (!value) return "";
-  return `$ ${Number(value)
+  return `$${Number(value)
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 };

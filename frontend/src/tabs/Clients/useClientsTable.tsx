@@ -49,7 +49,7 @@ export const useClientsTable = () => {
     }),
     columnHelper.display({
       id: "details",
-      header: phrases.clients.table.additionalInfo,
+      header: phrases.clients.table.portfolios,
       enableSorting: false,
       cell: (info) => (
         <button
