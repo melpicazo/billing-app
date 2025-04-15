@@ -66,4 +66,13 @@ export class BillingController {
       res.status(500).json({ error: "Failed to retrieve billing tiers" });
     }
   };
+
+  resetAllData = async (req: Request, res: Response) => {
+    try {
+      await this.billingService.resetAllData();
+      res.json({ message: "All data has been reset successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to reset data" });
+    }
+  };
 }

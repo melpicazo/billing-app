@@ -24,4 +24,7 @@ router.get(
 // Get billing tiers
 router.get("/tiers", billingController.getBillingTiers);
 
+// Reset all data
+router.delete("/reset", billingController.resetAllData);
+
 export default router;

@@ -86,4 +86,19 @@ export class BillingService {
       throw error;
     }
   }
+
+  async resetAllData() {
+    try {
+      await pool.query(`
+        DELETE FROM billing_tier_ranges;
+        DELETE FROM assets;
+        DELETE FROM portfolios;
+        DELETE FROM clients;
+        DELETE FROM billing_tiers;
+      `);
+    } catch (error) {
+      console.error("Error in resetAllData:", error);
+      throw error;
+    }
+  }
 }
