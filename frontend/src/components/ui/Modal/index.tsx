@@ -37,7 +37,7 @@ export function Modal({
         <div
           ref={modalRef}
           className={cn(
-            "w-full max-w-lg",
+            "w-full max-w-xl",
             isClosing ? "animate-slide-down" : "animate-slide-up"
           )}
         >

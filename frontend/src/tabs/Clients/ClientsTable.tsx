@@ -1,15 +1,11 @@
 import { flexRender } from "@tanstack/react-table";
-import { Modal } from "@/components/ui/Modal";
-import { useClientPortfolios } from "@/api/queries";
-import { cn, formatMoney, formatPercent } from "@/shared/utils";
+import { cn } from "@/shared/utils";
 import { useClientsTable } from "./useClientsTable";
+import { ClientDetailsModal } from "./ClientDetailsModal";
 
 export function ClientsTable() {
   const { table, selectedClient, setSelectedClient, isLoading, error } =
     useClientsTable();
-
-  const { data: portfolios = [], isLoading: isLoadingPortfolios } =
-    useClientPortfolios(selectedClient?.client_id ?? null);
 
   if (isLoading) {
     return (
@@ -92,67 +88,10 @@ export function ClientsTable() {
           </tbody>
         </table>
       </div>
-
-      <Modal
-        isOpen={!!selectedClient}
-        onClose={() => setSelectedClient(null)}
-        title={selectedClient?.client_name + " Details"}
-      >
-        {selectedClient && (
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold">Client Summary</h3>
-              <div className="mt-2 space-y-2">
-                <div className="rounded-md bg-gray-50 p-2">
-                  <p>Client ID: {selectedClient.external_client_id}</p>
-                  <p>Total AUM: {formatMoney(selectedClient.total_aum_cad)}</p>
-                  <p>
-                    Total Fees: {formatMoney(selectedClient.total_fees_cad)}
-                  </p>
-                  <p>
-                    Effective Fee Rate:{" "}
-                    {formatPercent(selectedClient.effective_fee_rate)}
-                  </p>
-                  <p>Number of Portfolios: {selectedClient.num_portfolios}</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold">Portfolios</h3>
-              <div className="mt-2">
-                {isLoadingPortfolios ? (
-                  <div className="flex items-center justify-center h-24">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {portfolios.map((portfolio) => (
-                      <div
-                        key={portfolio.portfolio_id}
-                        className="rounded-md bg-gray-50 p-2"
-                      >
-                        <p>Portfolio ID: {portfolio.external_portfolio_id}</p>
-                        <p>AUM: {formatMoney(portfolio.total_aum_cad)}</p>
-                        <p>Fees: {formatMoney(portfolio.total_fees_cad)}</p>
-                        <p>
-                          Effective Rate:{" "}
-                          {formatPercent(portfolio.effective_fee_rate)}
-                        </p>
-                      </div>
-                    ))}
-                    {portfolios.length === 0 && (
-                      <p className="text-gray-500">
-                        No portfolios found for this client.
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
+      <ClientDetailsModal
+        selectedClient={selectedClient}
+        setSelectedClient={setSelectedClient}
+      />
     </>
   );
 }
