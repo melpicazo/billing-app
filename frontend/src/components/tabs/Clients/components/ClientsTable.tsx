@@ -1,6 +1,6 @@
 import { useClientsTable } from "../useClientsTable";
 import { ClientDetailsModal } from "./ClientDetailsModal";
-import { Table } from "@/components/ui";
+import { Table } from "@/components/visuals";
 
 export function ClientsTable() {
   const { table, selectedClient, setSelectedClient, isLoading, error } =

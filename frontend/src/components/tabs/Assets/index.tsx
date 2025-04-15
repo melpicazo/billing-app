@@ -1,6 +1,6 @@
 import { EmptyState } from "@/components/ui";
 import { useBillingContext } from "@/components/contexts";
-import { Table } from "@/components/ui/Table";
+import { Table } from "@/components/visuals";
 import { useAssetsTable } from "./useAssetsTable";
 
 export const Assets = () => {

@@ -7,4 +7,3 @@ export * from "./Modal";
 export * from "./Navigation";
 export * from "./Skeleton";
 export * from "./TabLayout";
-export * from "./Table";
