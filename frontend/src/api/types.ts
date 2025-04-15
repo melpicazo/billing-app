@@ -4,6 +4,7 @@ export const queryKeys = {
   clientTotals: ["clientTotals"] as const,
   clientPortfolios: ["clientPortfolios"] as const,
   billingTiers: ["billingTiers"] as const,
+  resetAllData: ["resetAllData"] as const,
 } as const;
 
 export type QueryKeys = typeof queryKeys;

@@ -49,7 +49,16 @@
   },
   "settings": {
     "title": "Settings",
-    "description": "Configure your settings here."
+    "description": "Configure your settings here.",
+    "reset": {
+      "title": "Reset all data",
+      "description": "Reset all data to default values. This will clear all data from the database and reset the system to its initial state.",
+      "ctaButton": "Reset",
+      "modal": {
+        "description": "Are you sure you want to reset all data? This action cannot be undone.",
+        "ctaButton": "Confirm reset"
+      }
+    }
   },
   "fileUpload": {
     "title": "No billing data found",

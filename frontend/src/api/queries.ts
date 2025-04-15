@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "./types";
 import {
   fetchClientTotals,
@@ -6,6 +6,7 @@ import {
   fetchFirmTotals,
   fetchSystemStatus,
   fetchBillingTiers,
+  resetAllData,
 } from "./functions";
 
 export function useSystemStatus() {
@@ -41,5 +42,15 @@ export function useBillingTiers() {
   return useQuery({
     queryKey: queryKeys.billingTiers,
     queryFn: fetchBillingTiers,
+  });
+}
+
+export function useResetData() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: resetAllData,
+    onSuccess: () => {
+      return queryClient.invalidateQueries();
+    },
   });
 }

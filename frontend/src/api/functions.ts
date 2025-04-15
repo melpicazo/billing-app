@@ -58,3 +58,16 @@ export const fetchBillingTiers = async (): Promise<BillingTier[]> => {
   }
   return response.json();
 };
+
+export const resetAllData = async (): Promise<{ message: string }> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_SERVER_URL}/billing/reset`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to reset data");
+  }
+  return response.json();
+};

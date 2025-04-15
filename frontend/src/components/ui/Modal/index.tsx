@@ -2,6 +2,7 @@ import { type PropsWithChildren, type ButtonHTMLAttributes } from "react";
 import { useModal } from "./useModal";
 import { cn } from "@/shared/utils";
 import { Xmark } from "iconoir-react";
+import { CTAButton } from "@/components";
 
 interface ModalProps extends PropsWithChildren {
   isOpen: boolean;
@@ -18,6 +19,8 @@ export function Modal({
   children,
 }: ModalProps) {
   const { isClosing, modalRef, handleClose } = useModal(isOpen, onClose);
+  const { className: ctaButtonClassName, ...restCtaButtonProps } =
+    ctaButtonProps || {};
 
   if (!isOpen) return null;
 
@@ -63,9 +66,12 @@ export function Modal({
             {/* Footer */}
             {ctaButtonProps && (
               <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md"
-                  {...ctaButtonProps}
+                <CTAButton
+                  className={cn(
+                    "bg-blue-600 border-t border-gray-200 flex justify-end",
+                    ctaButtonClassName
+                  )}
+                  {...restCtaButtonProps}
                 />
               </div>
             )}
