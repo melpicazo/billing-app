@@ -39,4 +39,26 @@ export class BillingService {
     const result = await pool.query(query, [portfolioId]);
     return portfolioId ? result.rows[0] : result.rows;
   }
+
+  async getPortfolioTotalsByClientId(clientId: string) {
+    try {
+      const query = `
+        SELECT 
+          portfolio_id,
+          external_portfolio_id,
+          portfolio_value_cad as total_aum_cad,
+          fee_percentage as effective_fee_rate,
+          (portfolio_value_cad * fee_percentage / 100) as total_fees_cad
+        FROM totals_portfolio
+        WHERE client_id = $1
+        ORDER BY portfolio_value_cad DESC
+      `;
+      const result = await pool.query(query, [clientId]);
+      console.log(result);
+      return result.rows;
+    } catch (error) {
+      console.error("Error in getPortfolioTotalsByClientId:", error);
+      throw error;
+    }
+  }
 }

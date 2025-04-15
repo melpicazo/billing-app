@@ -45,4 +45,16 @@ export class BillingController {
       res.status(500).json({ error: "Failed to retrieve portfolio totals" });
     }
   };
+
+  getClientPortfolios = async (req: Request, res: Response) => {
+    try {
+      const { clientId } = req.params;
+      const portfolios = await this.billingService.getPortfolioTotalsByClientId(
+        clientId
+      );
+      res.json(portfolios);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve client portfolios" });
+    }
+  };
 }

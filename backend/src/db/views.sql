@@ -22,7 +22,7 @@ WITH portfolio_totals AS (
 SELECT 
   t.id as portfolio_id,
   t.external_portfolio_id,
-  c.external_client_id,
+  t.client_id,
   bt.external_tier_id as tier_id,
   COALESCE(t.cad_value, 0) as portfolio_value_cad,
   COALESCE(btr.fee_percentage, 0) as fee_percentage,
@@ -51,7 +51,7 @@ WITH client_portfolio_totals AS (
     SUM(tp.portfolio_value_cad * tp.fee_percentage) as total_fees_cad,
     COUNT(tp.portfolio_id) as num_portfolios
   FROM clients c
-  LEFT JOIN totals_portfolio tp ON tp.external_client_id = c.external_client_id
+  LEFT JOIN totals_portfolio tp ON tp.client_id = c.id
   GROUP BY c.id, c.external_client_id, c.client_name
 )
 SELECT 

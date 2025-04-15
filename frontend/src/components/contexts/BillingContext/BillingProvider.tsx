@@ -24,8 +24,7 @@ export const BillingProvider = ({ children }: BillingProviderProps) => {
       const queriesToRefetch = [
         queryKeys.systemStatus,
         queryKeys.firmTotals,
-        queryKeys.clients,
-        queryKeys.portfolios,
+        queryKeys.clientTotals,
       ];
 
       try {

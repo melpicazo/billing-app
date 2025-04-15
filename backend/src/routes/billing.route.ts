@@ -11,6 +11,10 @@ router.get("/status", billingController.getBillingStatus);
 router.get("/calculations/firm", billingController.getFirmTotals);
 router.get("/calculations/clients", billingController.getClientTotals);
 router.get("/calculations/client/:clientId", billingController.getClientTotals);
+router.get(
+  "/calculations/clients/:clientId/portfolios",
+  billingController.getClientPortfolios
+);
 router.get("/calculations/portfolios", billingController.getPortfolioTotals);
 router.get(
   "/calculations/portfolio/:portfolioId",
