@@ -1,6 +1,6 @@
 import { useBillingTiers } from "@/api/queries";
-import { LoadingSpinner } from "@/components";
-import { Card } from "@/components/ui/Card";
+import { LoadingSpinner } from "@/components/ui";
+import { Card } from "@/components/ui";
 import { formatMoney, formatPercent } from "@/shared/utils";
 
 export const BillingTiers = () => {

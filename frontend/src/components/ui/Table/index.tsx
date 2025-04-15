@@ -2,19 +2,19 @@ import { flexRender, type Table } from "@tanstack/react-table";
 import { cn } from "@/shared/utils";
 import { LoadingSpinner } from "../LoadingSpinner";
 
-interface DataTableProps<T> {
+interface TableProps<T> {
   table: Table<T>;
   isLoading?: boolean;
   error?: Error | null;
   emptyMessage?: string;
 }
 
-export function DataTable<T>({
+export function Table<T>({
   table,
   isLoading = false,
   error = null,
   emptyMessage = "No data available",
-}: DataTableProps<T>) {
+}: TableProps<T>) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">

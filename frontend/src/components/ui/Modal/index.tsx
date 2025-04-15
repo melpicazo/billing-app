@@ -2,7 +2,7 @@ import { type PropsWithChildren, type ButtonHTMLAttributes } from "react";
 import { useModal } from "./useModal";
 import { cn } from "@/shared/utils";
 import { Xmark } from "iconoir-react";
-import { CTAButton } from "@/components";
+import { CTAButton } from "@/components/ui";
 
 interface ModalProps extends PropsWithChildren {
   isOpen: boolean;

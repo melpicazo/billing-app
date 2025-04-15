@@ -1,7 +1,7 @@
 import { FileUpload } from "@/components/ui";
 import { useBillingContext } from "@/components/contexts";
 import { useKeyMetrics } from "./useKeyMetrics";
-import { Card } from "@/components/ui/Card";
+import { Card } from "@/components/ui";
 
 export const Overview = () => {
   const { hasData, statusError, isLoadingStatus } = useBillingContext();

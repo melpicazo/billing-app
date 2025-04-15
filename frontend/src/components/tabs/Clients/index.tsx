@@ -1,5 +1,5 @@
-import { ClientsTable } from "./ClientsTable";
-import { BillingTiers } from "./BillingTiers";
+import { ClientsTable } from "./components/ClientsTable";
+import { BillingTiers } from "./components/BillingTiers";
 import { useBillingContext } from "@/components/contexts";
 import { EmptyState } from "@/components/ui";
 

@@ -1,6 +1,6 @@
-import { useClientsTable } from "./useClientsTable";
+import { useClientsTable } from "../useClientsTable";
 import { ClientDetailsModal } from "./ClientDetailsModal";
-import { DataTable } from "@/components/ui/Table";
+import { Table } from "@/components/ui";
 
 export function ClientsTable() {
   const { table, selectedClient, setSelectedClient, isLoading, error } =
@@ -8,7 +8,7 @@ export function ClientsTable() {
 
   return (
     <>
-      <DataTable
+      <Table
         table={table}
         isLoading={isLoading}
         error={error}

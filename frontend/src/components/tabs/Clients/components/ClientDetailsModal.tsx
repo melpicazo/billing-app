@@ -1,5 +1,5 @@
 import { useClientPortfolios } from "@/api/queries";
-import { LoadingSpinner, Modal } from "@/components";
+import { LoadingSpinner, Modal } from "@/components/ui";
 import { ClientTotals } from "@/global/types";
 import { formatMoney, formatPercent } from "@/shared/utils";
 import phrases from "@/shared/phrases.json";
