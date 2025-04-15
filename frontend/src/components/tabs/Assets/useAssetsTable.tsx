@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { formatMoney } from "@/shared/utils";
 import { useAssets } from "@/api/queries";
-import { Asset } from "@/global/types";
+import { Asset } from "@/api/types";
 
 const columnHelper = createColumnHelper<Asset>();
 

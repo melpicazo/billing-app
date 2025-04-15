@@ -9,7 +9,7 @@ import {
 import { InfoCircle } from "iconoir-react";
 import { useClientTotals } from "@/api/queries";
 import { formatMoney, formatPercent } from "@/shared/utils";
-import { ClientTotals } from "@/global/types";
+import { ClientTotals } from "@/api/types";
 import phrases from "@/shared/phrases.json";
 
 const columnHelper = createColumnHelper<ClientTotals>();

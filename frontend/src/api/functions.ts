@@ -4,7 +4,7 @@ import {
   FirmTotals,
   Portfolio,
   Asset,
-} from "@/global/types";
+} from "@/api/types";
 
 export const fetchSystemStatus = async (): Promise<boolean> => {
   const response = await fetch(
