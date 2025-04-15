@@ -38,8 +38,10 @@ export interface BillingTier {
   ranges: TierRange[];
 }
 
-// Simple API response wrapper
-export interface ApiResponse<T> {
-  data: T | null;
-  error?: string;
+export interface Asset {
+  asset_id: string;
+  external_portfolio_id: string;
+  asset_value: number;
+  currency: string;
+  date: string;
 }

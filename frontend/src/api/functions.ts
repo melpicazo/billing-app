@@ -3,6 +3,7 @@ import {
   ClientTotals,
   FirmTotals,
   Portfolio,
+  Asset,
 } from "@/global/types";
 
 export const fetchSystemStatus = async (): Promise<boolean> => {
@@ -68,6 +69,16 @@ export const resetAllData = async (): Promise<{ message: string }> => {
   );
   if (!response.ok) {
     throw new Error("Failed to reset data");
+  }
+  return response.json();
+};
+
+export const fetchAssets = async (): Promise<Asset[]> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_SERVER_URL}/billing/calculations/assets`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch assets");
   }
   return response.json();
 };

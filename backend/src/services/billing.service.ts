@@ -101,4 +101,25 @@ export class BillingService {
       throw error;
     }
   }
+
+  async getAssets() {
+    try {
+      const query = `
+        SELECT 
+          a.asset_id,
+          a.asset_value,
+          a.currency,
+          a.date,
+          p.external_portfolio_id
+        FROM assets a
+        JOIN portfolios p ON p.id = a.portfolio_id
+        ORDER BY a.date DESC
+      `;
+      const result = await pool.query(query);
+      return result.rows;
+    } catch (error) {
+      console.error("Error in getAssets:", error);
+      throw error;
+    }
+  }
 }

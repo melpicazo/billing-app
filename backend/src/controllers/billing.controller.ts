@@ -75,4 +75,13 @@ export class BillingController {
       res.status(500).json({ error: "Failed to reset data" });
     }
   };
+
+  getAssets = async (req: Request, res: Response) => {
+    try {
+      const assets = await this.billingService.getAssets();
+      res.json(assets);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve assets" });
+    }
+  };
 }

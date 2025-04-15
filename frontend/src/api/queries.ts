@@ -7,6 +7,7 @@ import {
   fetchSystemStatus,
   fetchBillingTiers,
   resetAllData,
+  fetchAssets,
 } from "./functions";
 
 export function useSystemStatus() {
@@ -52,5 +53,12 @@ export function useResetData() {
     onSuccess: () => {
       return queryClient.invalidateQueries();
     },
+  });
+}
+
+export function useAssets() {
+  return useQuery({
+    queryKey: queryKeys.assets,
+    queryFn: fetchAssets,
   });
 }

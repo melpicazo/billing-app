@@ -27,4 +27,7 @@ router.get("/tiers", billingController.getBillingTiers);
 // Reset all data
 router.delete("/reset", billingController.resetAllData);
 
+// Get assets
+router.get("/calculations/assets", billingController.getAssets);
+
 export default router;
