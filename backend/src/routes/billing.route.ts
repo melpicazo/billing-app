@@ -4,10 +4,10 @@ import { BillingController } from "../controllers/billing.controller";
 const router = Router();
 const billingController = new BillingController();
 
-// Check system status
+/* Status */
 router.get("/status", billingController.getBillingStatus);
 
-// Get calculations at different levels
+/* Calculations */
 router.get("/calculations/firm", billingController.getFirmTotals);
 router.get("/calculations/clients", billingController.getClientTotals);
 router.get("/calculations/client/:clientId", billingController.getClientTotals);
@@ -20,14 +20,12 @@ router.get(
   "/calculations/portfolio/:portfolioId",
   billingController.getPortfolioTotals
 );
+router.get("/calculations/assets", billingController.getAssets);
 
-// Get billing tiers
+/* Tiers */
 router.get("/tiers", billingController.getBillingTiers);
 
-// Reset all data
+/* Reset */
 router.delete("/reset", billingController.resetAllData);
-
-// Get assets
-router.get("/calculations/assets", billingController.getAssets);
 
 export default router;

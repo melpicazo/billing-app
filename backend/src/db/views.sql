@@ -36,10 +36,10 @@ LEFT JOIN billing_tier_ranges btr ON btr.billing_tier_id = bt.id
 /**
  * CLIENT LEVEL VIEW
  * Aggregates portfolio data to calculate client-level metrics:
- * - Total AUM in CAD across all portfolios
- * - Total fees charged based on portfolio-level fee calculations
- * - Effective fee rate (Total Fees / Total AUM)
- * - Number of portfolios under management
+ * Total AUM in CAD across all portfolios
+ * Total fees charged based on portfolio-level fee calculations
+ * Effective fee rate (Total Fees / Total AUM)
+ * Number of portfolios under management
  */
 CREATE OR REPLACE VIEW totals_client AS
 WITH client_portfolio_totals AS (
@@ -75,10 +75,10 @@ ORDER BY total_aum_cad DESC;
 /**
  * FIRM LEVEL VIEW
  * Calculates company-wide metrics including:
- * - Total AUM across all portfolios
- * - Total revenue from all client fees
- * - Average effective fee rate across all AUM
- * - Total number of clients
+ * Total AUM across all portfolios
+ * Total revenue from all client fees
+ * Average effective fee rate across all AUM
+ * Total number of clients
  */
 CREATE OR REPLACE VIEW totals_firm AS
 SELECT 

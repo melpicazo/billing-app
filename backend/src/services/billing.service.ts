@@ -22,22 +22,37 @@ export class BillingService {
   }
 
   async getFirmTotals() {
-    const result = await pool.query("SELECT * FROM totals_firm");
-    return result.rows[0];
+    try {
+      const result = await pool.query("SELECT * FROM totals_firm");
+      return result.rows[0];
+    } catch (error) {
+      console.error("Error getting firm totals:", error);
+      throw error;
+    }
   }
 
   async getClientTotals(clientId?: string) {
-    const query =
-      "SELECT * FROM totals_client WHERE ($1::text IS NULL OR external_client_id = $1)";
-    const result = await pool.query(query, [clientId]);
-    return clientId ? result.rows[0] : result.rows;
+    try {
+      const query =
+        "SELECT * FROM totals_client WHERE ($1::text IS NULL OR external_client_id = $1)";
+      const result = await pool.query(query, [clientId]);
+      return clientId ? result.rows[0] : result.rows;
+    } catch (error) {
+      console.error("Error getting client totals:", error);
+      throw error;
+    }
   }
 
   async getPortfolioTotals(portfolioId?: string) {
-    const query =
-      "SELECT * FROM totals_portfolio WHERE ($1::text IS NULL OR external_portfolio_id = $1)";
-    const result = await pool.query(query, [portfolioId]);
-    return portfolioId ? result.rows[0] : result.rows;
+    try {
+      const query =
+        "SELECT * FROM totals_portfolio WHERE ($1::text IS NULL OR external_portfolio_id = $1)";
+      const result = await pool.query(query, [portfolioId]);
+      return portfolioId ? result.rows[0] : result.rows;
+    } catch (error) {
+      console.error("Error getting portfolio totals:", error);
+      throw error;
+    }
   }
 
   async getPortfolioTotalsByClientId(clientId: string) {
