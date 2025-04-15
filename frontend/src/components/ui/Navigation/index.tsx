@@ -8,17 +8,13 @@ interface NavigationProps {
 }
 
 export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
-  const handleTabClick = (tabId: Tab) => {
-    onTabChange(tabId);
-  };
-
   return (
     <>
       {/* Mobile sidebar */}
-      <MobileMenu activeTab={activeTab} onTabChange={handleTabClick} />
+      <MobileMenu activeTab={activeTab} onTabChange={onTabChange} />
 
       {/* Desktop sidebar */}
-      <DesktopMenu activeTab={activeTab} onTabChange={handleTabClick} />
+      <DesktopMenu activeTab={activeTab} onTabChange={onTabChange} />
     </>
   );
 };
