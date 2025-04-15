@@ -10,7 +10,7 @@ export const CTAButton = ({
   return (
     <button
       className={cn(
-        "group bg-orange-600 text-white px-4 py-2 rounded-md flex items-center gap-2 w-fit transition-all hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none",
+        "group bg-orange-600 text-white font-heading px-4 py-2 rounded-md flex items-center gap-2 w-fit transition-all hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none",
         className
       )}
       {...rest}

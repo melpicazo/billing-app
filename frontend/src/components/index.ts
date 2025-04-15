@@ -5,3 +5,4 @@ export * from "./contexts/BillingContext";
 export * from "./ui/TabLayout";
 export * from "./ui/LoadingSpinner";
 export * from "./ui/CTAButton";
+export * from "./ui/EmptyState";

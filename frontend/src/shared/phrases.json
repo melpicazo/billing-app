@@ -1,10 +1,13 @@
 {
   "globals": {
-    "meiaCapital": "Meia Capital"
-  },
-  "navigation": {
-    "overview": "Overview",
-    "clients": "Clients"
+    "meiaCapital": "Meia Capital",
+    "loading": "Loading...",
+    "error": "Error",
+    "emptyState": {
+      "title": "No data found",
+      "description": "No data found. Click here to go back to the Overview tab and begin the import process.",
+      "ctaButton": "Go back to Overview"
+    }
   },
   "overview": {
     "title": "Overview",
