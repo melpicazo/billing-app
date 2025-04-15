@@ -19,8 +19,8 @@ export const BillingTiers = () => {
         <LoadingSpinner />
       ) : (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {billingTiers.map((tier) => (
-            <Card key={tier.id}>
+          {billingTiers.map((tier, index) => (
+            <Card key={tier.id ?? index}>
               <div className="flex flex-col gap-4 h-full">
                 <h4 className="font-semibold flex gap-2 items-center text-sky-700">
                   Tier {tier.external_tier_id}

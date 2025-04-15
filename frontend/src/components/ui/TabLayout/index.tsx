@@ -5,7 +5,7 @@ interface TabLayoutProps extends React.PropsWithChildren {
 
 export const TabLayout = ({ title, description, children }: TabLayoutProps) => {
   return (
-    <div className="flex flex-col w-full overflow-x-hidden">
+    <div className="flex flex-col w-full overflow-auto">
       <div className="container-default-spacing flex flex-col gap-4 border-b border-gray-200 bg-white shadow-sm">
         <h1>{title}</h1>
         <p>{description}</p>

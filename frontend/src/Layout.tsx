@@ -40,7 +40,7 @@ export default function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <div className="h-screen bg-gray-50 flex flex-col md:flex-row">
       {/* Navigation */}
       <Navigation activeTab={currentTab} onTabChange={handleTabChange} />
 
