@@ -54,7 +54,6 @@ export class BillingService {
         ORDER BY portfolio_value_cad DESC
       `;
       const result = await pool.query(query, [clientId]);
-      console.log(result);
       return result.rows;
     } catch (error) {
       console.error("Error in getPortfolioTotalsByClientId:", error);
