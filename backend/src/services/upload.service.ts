@@ -8,6 +8,8 @@ import {
   type ExcelAsset,
   type ExcelBillingTier,
 } from "../types/excel.types";
+import _ from "lodash";
+import { UploadDbService } from "./uploadDb.service";
 
 /**
  * Interface for the results of the file processing
@@ -35,6 +37,8 @@ export class UploadService {
     DataType.PORTFOLIO /* Step 3: Portfolios */,
     DataType.ASSET /* Step 4: Assets */,
   ];
+
+  constructor(private uploadDbService: UploadDbService) {}
 
   /**
    * Process the files and insert them into the database
@@ -159,16 +163,27 @@ export class UploadService {
   ): Promise<void> {
     switch (type) {
       case DataType.BILLING:
-        await this.parseBillingTiers(data as ExcelBillingTier[], client);
+        const tierMap = await this.uploadDbService.parseBillingTiers(
+          data as ExcelBillingTier[],
+          client
+        );
+        await this.uploadDbService.parseBillingTierRanges(
+          data as ExcelBillingTier[],
+          tierMap,
+          client
+        );
         break;
       case DataType.CLIENT:
-        await this.parseClients(data as ExcelClient[], client);
+        await this.uploadDbService.parseClients(data as ExcelClient[], client);
         break;
       case DataType.PORTFOLIO:
-        await this.parsePortfolios(data as ExcelPortfolio[], client);
+        await this.uploadDbService.parsePortfolios(
+          data as ExcelPortfolio[],
+          client
+        );
         break;
       case DataType.ASSET:
-        await this.parseAssets(data as ExcelAsset[], client);
+        await this.uploadDbService.parseAssets(data as ExcelAsset[], client);
         break;
     }
   }
@@ -271,192 +286,6 @@ export class UploadService {
     );
     if (missingTypes.length > 0) {
       throw new Error(`Missing required data: ${missingTypes.join(", ")}`);
-    }
-  }
-
-  /**
-   * Parse the clients file and insert the data into the database
-   * Client schema can be found in `src/db/schema.sql`
-   * @param data - The data to parse
-   * @param client - The client to use
-   */
-  private async parseClients(
-    data: ExcelClient[],
-    client: PoolClient
-  ): Promise<void> {
-    for (const row of data) {
-      try {
-        const { rows } = await client.query(
-          `SELECT id FROM billing_tiers WHERE external_tier_id = $1`,
-          [row.billing_tier_id]
-        );
-        if (!rows.length) {
-          throw new Error(`Billing tier ${row.billing_tier_id} not found`);
-        }
-        await client.query(
-          `INSERT INTO clients (external_client_id, client_name, province, country, billing_tier_id)
-           VALUES ($1, $2, $3, $4, $5)`,
-          [
-            row.external_client_id,
-            row.client_name,
-            row.province,
-            row.country,
-            rows[0].id,
-          ]
-        );
-      } catch (error) {
-        console.error(
-          `Error processing client ${row.external_client_id}:`,
-          error
-        );
-        throw error;
-      }
-    }
-  }
-
-  /**
-   * Parse the portfolios file and insert the data into the database
-   * Portfolio schema can be found in `src/db/schema.sql`
-   * @param data - The data to parse
-   * @param client - The client to use
-   */
-  private async parsePortfolios(
-    data: ExcelPortfolio[],
-    client: PoolClient
-  ): Promise<void> {
-    for (const row of data) {
-      try {
-        const { rows } = await client.query(
-          `SELECT id FROM clients WHERE external_client_id = $1`,
-          [row.external_client_id]
-        );
-
-        /* If the client is not found, skip inserting the portfolio */
-        if (!rows.length) {
-          console.warn(
-            `Skipping portfolio ${row.external_portfolio_id}: Client ${row.external_client_id} not found`
-          );
-          continue;
-        }
-
-        await client.query(
-          `INSERT INTO portfolios (external_portfolio_id, client_id, currency)
-           VALUES ($1, $2, $3)`,
-          [row.external_portfolio_id, rows[0].id, row.currency]
-        );
-      } catch (error) {
-        console.error(
-          `Error processing portfolio ${row.external_portfolio_id}:`,
-          error
-        );
-        throw error;
-      }
-    }
-  }
-
-  /**
-   * Parse the assets file and insert the data into the database
-   * Asset schema can be found in `src/db/schema.sql`
-   * @param data - The data to parse
-   * @param client - The client to use
-   */
-  private async parseAssets(
-    data: ExcelAsset[],
-    client: PoolClient
-  ): Promise<void> {
-    for (const row of data) {
-      try {
-        const { rows } = await client.query(
-          `SELECT id FROM portfolios WHERE external_portfolio_id = $1`,
-          [row.external_portfolio_id]
-        );
-
-        /* If the portfolio is not found, skip inserting the asset */
-        if (!rows.length) {
-          console.warn(
-            `Skipping asset ${row.asset_id}: Portfolio ${row.external_portfolio_id} not found`
-          );
-          continue;
-        }
-
-        await client.query(
-          `INSERT INTO assets (portfolio_id, asset_id, asset_value, currency, date)
-           VALUES ($1, $2, $3, $4, $5)`,
-          [rows[0].id, row.asset_id, row.asset_value, row.currency, row.date]
-        );
-      } catch (error) {
-        console.error(`Error processing asset ${row.asset_id}:`, error);
-        throw error;
-      }
-    }
-  }
-
-  /**
-   * Parse the billing tiers file and insert the data into the database
-   * We create two tables to store the billing tiers and the tier ranges because:
-   * 1. Data that comes from the .csv files is not normalized (i.e., multiple rows for the same billing tier ID)
-   * 2. Provides better data integrity and flexibility
-   * Billing tier schema and supplementing tier ranges can be found in `src/db/schema.sql`
-   */
-  private async parseBillingTiers(
-    data: ExcelBillingTier[],
-    client: PoolClient
-  ): Promise<void> {
-    /* Group rows by external_tier_id */
-    const tierGroups = data.reduce(
-      (groups, row) => ({
-        ...groups,
-        [row.external_tier_id]: [...(groups[row.external_tier_id] || []), row],
-      }),
-      {} as Record<string, ExcelBillingTier[]>
-    );
-
-    /* Process each tier and its ranges */
-    for (const [external_tier_id, ranges] of Object.entries(tierGroups)) {
-      try {
-        /* Insert tier and get its ID */
-        const {
-          rows: [{ id: tier_id }],
-        } = await client.query(
-          `INSERT INTO billing_tiers (external_tier_id)
-           VALUES ($1)
-           ON CONFLICT (external_tier_id) DO UPDATE 
-           SET external_tier_id = EXCLUDED.external_tier_id
-           RETURNING id`,
-          [external_tier_id]
-        );
-
-        /* Insert the ranges for this tier */
-        await this.insertTierRanges(tier_id, ranges, client);
-      } catch (error) {
-        console.error(`Error processing tier ${external_tier_id}:`, error);
-        throw new Error(`Failed to process billing tier ${external_tier_id}`);
-      }
-    }
-  }
-
-  /**
-   * Insert the ranges for a billing tier into billing_tier_ranges table
-   * @param tier_id - The ID of the billing tier
-   * @param ranges - The ranges to insert
-   * @param client - The client to use
-   */
-  private async insertTierRanges(
-    tier_id: number,
-    ranges: ExcelBillingTier[],
-    client: PoolClient
-  ): Promise<void> {
-    for (const range of ranges) {
-      await client.query(
-        `INSERT INTO billing_tier_ranges (billing_tier_id, portfolio_aum_min, portfolio_aum_max, fee_percentage)
-         VALUES ($1, $2, $3, $4)`,
-        [
-          tier_id,
-          range.portfolio_aum_min,
-          range.portfolio_aum_max,
-          range.fee_percentage,
-        ]
-      );
     }
   }
 }

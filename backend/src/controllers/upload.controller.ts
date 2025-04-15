@@ -1,10 +1,13 @@
 import { type Request, type Response } from "express";
 import { UploadService } from "../services/upload.service";
-
+import { UploadDbService } from "../services/uploadDb.service";
 export class UploadController {
   private uploadService: UploadService;
+  private uploadDbService: UploadDbService;
+
   constructor() {
-    this.uploadService = new UploadService();
+    this.uploadDbService = new UploadDbService();
+    this.uploadService = new UploadService(this.uploadDbService);
   }
 
   /**
