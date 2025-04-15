@@ -24,6 +24,10 @@
       }
     }
   },
+  "clients": {
+    "title": "Clients",
+    "description": "View dedicated client data with ease. Our clients are the heart of our business, and we're here to support them every step of the way. Explore their unique data and insights to better understand their needs and goals."
+  },
   "fileUpload": {
     "title": "No billing data found",
     "description": "Looks like you haven't imported any data yet! Upload a single Excel file (.xlsx) containing all data, or four CSV files (.csv) for clients, portfolios, assets, and billing tiers.",
