@@ -29,6 +29,7 @@
     "description": "View dedicated client data with ease. Our clients are the heart of our business, and we're here to support them every step of the way. Explore their unique data and insights to better understand their needs and goals.",
     "table": {
       "clientId": "Client ID",
+      "tierId": "Tier ID",
       "name": "Name",
       "totalAum": "Total AUM (CAD)",
       "totalFees": "Total Fees (CAD)",

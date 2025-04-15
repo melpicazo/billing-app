@@ -27,6 +27,10 @@ export const useClientsTable = () => {
       header: phrases.clients.table.clientId,
       cell: (info) => info.getValue(),
     }),
+    columnHelper.accessor("external_tier_id", {
+      header: phrases.clients.table.tierId,
+      cell: (info) => info.getValue(),
+    }),
     columnHelper.accessor("client_name", {
       header: phrases.clients.table.name,
       cell: (info) => info.getValue(),
