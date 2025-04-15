@@ -2,7 +2,7 @@ import { useMemo, type PropsWithChildren } from "react";
 import { useSystemStatus, useFirmTotals } from "../../../api/queries";
 import { BillingContext } from "./useBillingContext";
 import { useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/api/types";
+import { queryKeys } from "@/api/keys";
 
 type BillingProviderProps = PropsWithChildren;
 
