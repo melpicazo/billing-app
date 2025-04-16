@@ -1,16 +1,6 @@
 import { useBillingContext } from "@/components/contexts";
 import { useState } from "react";
-
-interface UploadResult {
-  filename: string;
-  status: "success" | "error";
-  message?: string;
-}
-
-interface UploadResponse {
-  error?: string;
-  details?: string | UploadResult[];
-}
+import { type UploadResult } from "@/api/types";
 
 export const useFileUpload = () => {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -37,17 +27,20 @@ export const useFileUpload = () => {
     });
 
     try {
-      const response = await fetch("http://localhost:3000/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_SERVER_URL}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      const data: UploadResponse | UploadResult[] = await response.json();
+      const data = await response.json();
 
       if (Array.isArray(data)) {
         setResults(data);
         await refetchAll();
-      } else if (data.error) {
+      } else if ("error" in data) {
         setResults([
           {
             filename: "Upload Error",
@@ -69,5 +62,19 @@ export const useFileUpload = () => {
       setLoading(false);
     }
   };
-  return { files, loading, results, handleFileChange, handleUpload };
+
+  const resetValues = () => {
+    setFiles(null);
+    setResults([]);
+    setLoading(false);
+  };
+
+  return {
+    files,
+    loading,
+    results,
+    handleFileChange,
+    handleUpload,
+    resetValues,
+  };
 };

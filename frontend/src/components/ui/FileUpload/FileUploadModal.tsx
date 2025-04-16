@@ -11,12 +11,24 @@ interface FileUploadModalProps {
 }
 
 export const FileUploadModal = ({ isOpen, onClose }: FileUploadModalProps) => {
-  const { files, handleFileChange, handleUpload, results, loading } =
-    useFileUpload();
+  const {
+    files,
+    handleFileChange,
+    handleUpload,
+    results,
+    loading,
+    resetValues,
+  } = useFileUpload();
+
+  const handleClose = () => {
+    resetValues();
+    onClose();
+  };
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       title={phrases.fileUpload.uploadFiles}
       ctaButtonProps={{
         onClick: handleUpload,
