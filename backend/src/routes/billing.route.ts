@@ -15,11 +15,6 @@ router.get(
   "/calculations/clients/:clientId/portfolios",
   billingController.getClientPortfolios
 );
-router.get("/calculations/portfolios", billingController.getPortfolioTotals);
-router.get(
-  "/calculations/portfolio/:portfolioId",
-  billingController.getPortfolioTotals
-);
 router.get("/calculations/assets", billingController.getAssets);
 
 /* Tiers */

@@ -43,18 +43,6 @@ export class BillingService {
     }
   }
 
-  async getPortfolioTotals(portfolioId?: string) {
-    try {
-      const query =
-        "SELECT * FROM totals_portfolio WHERE ($1::text IS NULL OR external_portfolio_id = $1)";
-      const result = await pool.query(query, [portfolioId]);
-      return portfolioId ? result.rows[0] : result.rows;
-    } catch (error) {
-      console.error("Error getting portfolio totals:", error);
-      throw error;
-    }
-  }
-
   async getPortfolioTotalsByClientId(clientId: string) {
     try {
       const query = `

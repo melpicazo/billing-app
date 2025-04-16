@@ -36,16 +36,6 @@ export class BillingController {
     }
   };
 
-  getPortfolioTotals = async (req: Request, res: Response) => {
-    try {
-      const portfolioId = req.params.portfolioId;
-      const totals = await this.billingService.getPortfolioTotals(portfolioId);
-      res.json(totals);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to retrieve portfolio totals" });
-    }
-  };
-
   getClientPortfolios = async (req: Request, res: Response) => {
     try {
       const { clientId } = req.params;
