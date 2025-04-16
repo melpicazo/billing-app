@@ -20,22 +20,22 @@ export const useKeyMetrics = (): KeyMetric[] => {
   const keyMetrics: KeyMetric[] = [
     {
       id: "totalRevenue",
-      title: phrases.overview.cards.totalRevenue.title,
-      description: phrases.overview.cards.totalRevenue.description,
+      title: phrases.overview.keyMetrics.cards.totalRevenue.title,
+      description: phrases.overview.keyMetrics.cards.totalRevenue.description,
       value: formatMoney(firmTotals?.firm_revenue_cad),
       Icon: DollarCircle,
     },
     {
       id: "totalAUM",
-      title: phrases.overview.cards.totalAUM.title,
-      description: phrases.overview.cards.totalAUM.description,
+      title: phrases.overview.keyMetrics.cards.totalAUM.title,
+      description: phrases.overview.keyMetrics.cards.totalAUM.description,
       value: formatMoney(firmTotals?.firm_aum_cad),
       Icon: StatsUpSquare,
     },
     {
       id: "averageFeeRate",
-      title: phrases.overview.cards.averageFeeRate.title,
-      description: phrases.overview.cards.averageFeeRate.description,
+      title: phrases.overview.keyMetrics.cards.averageFeeRate.title,
+      description: phrases.overview.keyMetrics.cards.averageFeeRate.description,
       value: formatPercent(firmTotals?.firm_average_fee_rate),
       Icon: PercentageCircle,
     },
