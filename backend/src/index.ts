@@ -4,7 +4,7 @@ import "dotenv/config";
 import pool from "./db/db";
 import uploadRoutes from "./routes/upload.route";
 import billingRoutes from "./routes/billing.route";
-
+import healthRoutes from "./routes/health.route";
 function logInitializationStep(message: string) {
   const GREEN_COLOR_FORMATTING = "\x1b[32m%s\x1b[0m";
   console.log(GREEN_COLOR_FORMATTING, "✓ init", message);
@@ -25,7 +25,7 @@ pool
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/health", healthRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/billing", billingRoutes);
 
