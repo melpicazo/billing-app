@@ -31,7 +31,6 @@ export const BillingProvider = ({ children }: BillingProviderProps) => {
         queryKeys.firmTotals,
         queryKeys.clientTotals,
       ];
-
       try {
         await Promise.all(
           queriesToRefetch.map((queryKey) =>
@@ -45,7 +44,6 @@ export const BillingProvider = ({ children }: BillingProviderProps) => {
     };
   }, [queryClient]);
 
-  // Memoize our context value
   const contextValue = useMemo(
     () => ({
       hasData: hasData ?? false,

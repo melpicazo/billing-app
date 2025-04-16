@@ -1,21 +1,10 @@
+import { ClientTotals, FirmTotals } from "@/api/types";
 import { createContext, useContext } from "react";
 
 interface BillingContextValues {
   hasData: boolean;
-  firmTotals: {
-    firm_aum_cad: number;
-    firm_revenue_cad: number;
-    firm_average_fee_rate: number;
-    num_clients: number;
-    num_portfolios: number;
-  } | null;
-  clientTotals:
-    | {
-        client_name: string;
-        total_fees_cad: number;
-        external_tier_id: string;
-      }[]
-    | null;
+  firmTotals: FirmTotals | null;
+  clientTotals: ClientTotals[] | null;
   isLoadingFirmTotals: boolean;
   isLoadingClientTotals: boolean;
   firmTotalsError: Error | null;
