@@ -9,10 +9,17 @@ interface BillingContextValues {
     num_clients: number;
     num_portfolios: number;
   } | null;
-  isLoadingStatus: boolean;
-  isLoadingTotals: boolean;
-  statusError: Error | null;
-  totalsError: Error | null;
+  clientTotals:
+    | {
+        client_name: string;
+        total_fees_cad: number;
+        external_tier_id: string;
+      }[]
+    | null;
+  isLoadingFirmTotals: boolean;
+  isLoadingClientTotals: boolean;
+  firmTotalsError: Error | null;
+  clientTotalsError: Error | null;
   refetchAll: () => Promise<void>;
 }
 

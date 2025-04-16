@@ -1,4 +1,3 @@
-import { useClientTotals } from "@/api/queries";
 import { LoadingSpinner, Card } from "@/components/ui";
 import {
   BarChart,
@@ -13,7 +12,7 @@ import {
 import _ from "lodash";
 import phrases from "@/shared/phrases.json";
 import { getIndexedColor, formatMoney } from "@/shared/utils";
-
+import { useBillingContext } from "@/components/contexts";
 interface StackedData {
   tier: string;
   total: number;
@@ -22,9 +21,9 @@ interface StackedData {
 }
 
 export const TiersRevenueBarChart = () => {
-  const { data: clientTotals = [], isLoading } = useClientTotals();
+  const { clientTotals, isLoadingClientTotals } = useBillingContext();
 
-  if (isLoading) {
+  if (isLoadingClientTotals) {
     return <LoadingSpinner />;
   }
 

@@ -1,5 +1,5 @@
 import { useMemo, type PropsWithChildren } from "react";
-import { useSystemStatus, useFirmTotals } from "../../../api/queries";
+import { useSystemStatus, useFirmTotals, useClientTotals } from "@/api/queries";
 import { BillingContext } from "./useBillingContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/api/keys";
@@ -15,9 +15,14 @@ export const BillingProvider = ({ children }: BillingProviderProps) => {
   } = useSystemStatus();
   const {
     data: firmTotals,
-    isLoading: isLoadingTotals,
-    error: totalsError,
+    isLoading: isLoadingFirmTotals,
+    error: firmTotalsError,
   } = useFirmTotals();
+  const {
+    data: clientTotals,
+    isLoading: isLoadingClientTotals,
+    error: clientTotalsError,
+  } = useClientTotals();
 
   const refetchAll = useMemo(() => {
     return async () => {
@@ -46,18 +51,24 @@ export const BillingProvider = ({ children }: BillingProviderProps) => {
       hasData: hasData ?? false,
       firmTotals: firmTotals ?? null,
       isLoadingStatus,
-      isLoadingTotals,
+      isLoadingFirmTotals,
+      firmTotalsError,
+      clientTotals: clientTotals ?? null,
+      isLoadingClientTotals,
       statusError,
-      totalsError,
+      clientTotalsError,
       refetchAll,
     }),
     [
       hasData,
       firmTotals,
+      clientTotals,
       isLoadingStatus,
-      isLoadingTotals,
+      isLoadingFirmTotals,
+      isLoadingClientTotals,
       statusError,
-      totalsError,
+      firmTotalsError,
+      clientTotalsError,
       refetchAll,
     ]
   );

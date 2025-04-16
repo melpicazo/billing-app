@@ -1,4 +1,3 @@
-import { useClientTotals } from "@/api/queries";
 import { LoadingSpinner, Card } from "@/components/ui";
 import {
   PieChart,
@@ -12,6 +11,7 @@ import {
 import _ from "lodash";
 import phrases from "@/shared/phrases.json";
 import { getIndexedColor } from "@/shared/utils";
+import { useBillingContext } from "@/components/contexts";
 
 interface CustomizedLabelProps {
   cx: number;
@@ -101,9 +101,9 @@ const renderLegend = (data: ChartData[]) => {
 };
 
 export const ClientTiersPieChart = () => {
-  const { data: clientTotals = [], isLoading } = useClientTotals();
+  const { clientTotals, isLoadingClientTotals } = useBillingContext();
 
-  if (isLoading) {
+  if (isLoadingClientTotals) {
     return <LoadingSpinner />;
   }
 
@@ -111,7 +111,7 @@ export const ClientTiersPieChart = () => {
    * Group clients by tier ID
    * Then calculate the percentage of clients in each tier
    */
-  const totalClients = clientTotals.length;
+  const totalClients = clientTotals?.length ?? 0;
   const data: ChartData[] = _(clientTotals)
     .groupBy("external_tier_id")
     .map((clients, tierId) => ({
