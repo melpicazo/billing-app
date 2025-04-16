@@ -10,6 +10,7 @@ import {
 } from "../types/excel.types";
 import _ from "lodash";
 import { UploadDbService } from "./uploadDb.service";
+import { type ParseResult } from "./uploadDb.service";
 
 /**
  * Interface for the results of the file processing
@@ -20,6 +21,7 @@ interface FileProcessResult {
   filename: string;
   status: "success" | "error";
   message?: string;
+  skippedRows?: string[]; // Simple array of skipped row messages
 }
 
 export class UploadService {
@@ -128,18 +130,21 @@ export class UploadService {
         });
 
         /* Process the data and add to the processed types*/
-        await this.processDataTypes(type, data, client);
+        const result = await this.processDataTypes(type, data, client);
         processedTypes.add(type);
 
-        /* Add success result */
+        /* Add success result with any skipped rows */
         results.push({
-          filename: `${type}`,
+          filename: type,
           status: "success",
+          ...(result && "skipped" in result && result.skipped.count > 0
+            ? { skippedRows: result.skipped.ids }
+            : {}),
         });
       } catch (error) {
         /* Add error result and rethrow */
         results.push({
-          filename: `${type}`,
+          filename: type,
           status: "error",
           message: error instanceof Error ? error.message : "Unknown error",
         });
@@ -160,7 +165,7 @@ export class UploadService {
     type: DataType,
     data: unknown[],
     client: PoolClient
-  ): Promise<void> {
+  ): Promise<ParseResult | void> {
     switch (type) {
       case DataType.BILLING:
         const tierMap = await this.uploadDbService.parseBillingTiers(
@@ -172,19 +177,22 @@ export class UploadService {
           tierMap,
           client
         );
-        break;
+        return;
       case DataType.CLIENT:
-        await this.uploadDbService.parseClients(data as ExcelClient[], client);
-        break;
+        return await this.uploadDbService.parseClients(
+          data as ExcelClient[],
+          client
+        );
       case DataType.PORTFOLIO:
-        await this.uploadDbService.parsePortfolios(
+        return await this.uploadDbService.parsePortfolios(
           data as ExcelPortfolio[],
           client
         );
-        break;
       case DataType.ASSET:
-        await this.uploadDbService.parseAssets(data as ExcelAsset[], client);
-        break;
+        return await this.uploadDbService.parseAssets(
+          data as ExcelAsset[],
+          client
+        );
     }
   }
 

@@ -45,3 +45,10 @@ export interface Asset {
   currency: string;
   date: string;
 }
+
+export interface UploadResult {
+  filename: string;
+  status: "success" | "error";
+  message?: string;
+  skippedRows?: string[];
+}

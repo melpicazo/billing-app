@@ -73,7 +73,11 @@
     "title": "No billing data found",
     "description": "Looks like you haven't imported any data yet! Upload a single Excel file (.xlsx) containing all data, or four CSV files (.csv) for clients, portfolios, assets, and billing tiers.",
     "ctaButton": "Begin data import",
-    "uploadFiles": "Upload File(s)"
+    "uploadFiles": "Upload File(s)",
+    "uploading": "Uploading...",
+    "uploadSuccessMessage": "The file was successfully uploaded to the server. Check processing results below.",
+    "skipped": "Skipped",
+    "rows": "rows"
   },
   "visuals": {
     "global": {
