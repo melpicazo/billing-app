@@ -2,6 +2,7 @@ import { useBillingContext } from "@/components/contexts";
 import { useState } from "react";
 import { type UploadResult } from "@/api/types";
 import phrases from "@/shared/phrases.json";
+import { uploadFiles } from "@/api/functions";
 
 export const useFileUpload = () => {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -12,7 +13,7 @@ export const useFileUpload = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFiles(e.target.files);
-      setResults([]); // Clear previous results
+      setResults([]);
     }
   };
 
@@ -28,28 +29,9 @@ export const useFileUpload = () => {
     });
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_SERVER_URL}/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-
-      if (Array.isArray(data)) {
-        setResults(data);
-        await refetchAll();
-      } else if ("error" in data) {
-        setResults([
-          {
-            filename: phrases.fileUpload.uploadError,
-            status: "error",
-            message: data.error,
-          },
-        ]);
-      }
+      const data = await uploadFiles(formData);
+      setResults(data);
+      await refetchAll();
     } catch (err) {
       console.error("Upload error:", err);
       setResults([

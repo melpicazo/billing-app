@@ -4,6 +4,7 @@ import {
   ClientTotals,
   FirmTotals,
   Portfolio,
+  UploadResult,
 } from "./types";
 
 export const fetchSystemStatus = async (): Promise<boolean> => {
@@ -81,4 +82,18 @@ export const fetchAssets = async (): Promise<Asset[]> => {
     throw new Error("Failed to fetch assets");
   }
   return response.json();
+};
+
+export const uploadFiles = async (
+  formData: FormData
+): Promise<UploadResult[]> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_SERVER_URL}/upload`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+  const data = await response.json();
+  return data;
 };
