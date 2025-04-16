@@ -1,3 +1,5 @@
+# Meia Capital Billing App
+
 Welcome to the Meia Capital Internal Portal – a modern, full-stack application for managing and visualizing client billing tiers and asset calculations.
 This was built with React, Express, Node.js and connected to a PostgreSQL database.
 
