@@ -63,14 +63,6 @@ billing-app/
 - File upload handling
 - RESTful API design
 
-## Features in Detail
-
-### Client Tier Management
-
-- Automatic tier calculation based on asset values
-- Real-time updates when data changes
-- Visual representation of tier distribution
-
 ## Fee Calculation Details
 
 The management fee calculation follows a specific hierarchy:
