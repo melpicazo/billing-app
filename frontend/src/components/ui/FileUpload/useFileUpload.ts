@@ -1,6 +1,7 @@
 import { useBillingContext } from "@/components/contexts";
 import { useState } from "react";
 import { type UploadResult } from "@/api/types";
+import phrases from "@/shared/phrases.json";
 
 export const useFileUpload = () => {
   const [files, setFiles] = useState<FileList | null>(null);
@@ -43,7 +44,7 @@ export const useFileUpload = () => {
       } else if ("error" in data) {
         setResults([
           {
-            filename: "Upload Error",
+            filename: phrases.fileUpload.uploadError,
             status: "error",
             message: data.error,
           },
@@ -53,9 +54,9 @@ export const useFileUpload = () => {
       console.error("Upload error:", err);
       setResults([
         {
-          filename: "Upload Error",
+          filename: phrases.fileUpload.uploadError,
           status: "error",
-          message: "Failed to upload files",
+          message: phrases.fileUpload.uploadErrorDetails,
         },
       ]);
     } finally {
