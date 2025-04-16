@@ -4,18 +4,18 @@ import { KeyMetrics } from "./components/KeyMetrics";
 import { Dashboard } from "./components/Dashboard";
 
 export const Overview = () => {
-  const { hasData, statusError, isLoadingStatus } = useBillingContext();
+  const { hasData, firmTotalsError, isLoadingFirmTotals } = useBillingContext();
 
-  if (statusError) {
+  if (firmTotalsError) {
     return (
       <div className="p-4 text-red-500">
-        Error loading system status: {statusError.message}
+        Error loading firm totals: {firmTotalsError.message}
       </div>
     );
   }
   return (
     <div className="flex flex-col gap-8">
-      {isLoadingStatus ? (
+      {isLoadingFirmTotals ? (
         "Loading..."
       ) : (
         <div className="flex flex-col gap-10">
