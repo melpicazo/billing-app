@@ -26,23 +26,6 @@ pool
 app.use(cors());
 app.use(express.json());
 
-// Simple test endpoints
-app.get("/api", (_req: Request, res: Response) => {
-  res.json({ message: "Hello from Express!" });
-});
-
-app.get("/api/test", (_req: Request, res: Response) => {
-  res.json({
-    message: "Test endpoint working!",
-    time: new Date().toISOString(),
-    env: process.env.NODE_ENV,
-  });
-});
-
-app.get("/api/ping", (_req: Request, res: Response) => {
-  res.json({ status: "pong" });
-});
-
 app.use("/api/upload", uploadRoutes);
 app.use("/api/billing", billingRoutes);
 
